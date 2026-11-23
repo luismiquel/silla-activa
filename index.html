@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SillaActiva — 100 Ejercicios Seguros y Fáciles en Silla</title>
+  <title>SillaActiva — 150 Ejercicios Seguros y Fáciles en Silla</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -186,10 +186,10 @@
     <!-- PANTALLA DE INICIO -->
     <section id="homeScreen" class="space-y-6">
       <div class="card-box rounded-3xl p-5 sm:p-6 text-center space-y-3">
-        <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">100 Ejercicios Seguros en Silla</h1>
+        <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">150 Ejercicios Seguros en Silla</h1>
         <p class="opacity-90 text-base sm:text-lg">100 % sentado, sin complicaciones y guiado por voz en español.</p>
         <div class="flex flex-wrap justify-center gap-2.5 pt-1 text-sm sm:text-base font-bold">
-          <span class="px-3 py-1 rounded-full border border-current">✅ 100 ejercicios (10 por zona)</span>
+          <span class="px-3 py-1 rounded-full border border-current">✅ 150 ejercicios (15 por zona)</span>
           <span class="px-3 py-1 rounded-full border border-current">🏆 Sesiones: <span id="totalSessionsBadge">0</span></span>
           <span class="px-3 py-1 rounded-full border border-current">🔥 Racha: <span id="streakBadge">0</span> días</span>
         </div>
@@ -247,7 +247,7 @@
 
       <!-- Categorías de ejercicios -->
       <div class="space-y-3">
-        <h2 class="text-xl sm:text-2xl font-extrabold px-1">2. O elige una zona del cuerpo (10 ejercicios cada una)</h2>
+        <h2 class="text-xl sm:text-2xl font-extrabold px-1">2. O elige una zona del cuerpo (15 ejercicios cada una)</h2>
         <div id="categoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
 
@@ -284,7 +284,7 @@
           <button onclick="goHome()" class="px-4 py-2.5 rounded-2xl border-2 border-current font-extrabold text-base">
             ⬅️ Volver
           </button>
-          <span class="px-3 py-1 rounded-full border border-current text-sm font-bold">10 ejercicios</span>
+          <span class="px-3 py-1 rounded-full border border-current text-sm font-bold">15 ejercicios</span>
         </div>
 
         <div class="text-center space-y-1">
@@ -295,7 +295,7 @@
 
         <button id="btnStartWholeCat" class="btn-primary w-full rounded-3xl p-5 text-xl shadow-lg flex items-center justify-center gap-3">
           <span>▶️</span>
-          <span>Hacer los 10 ejercicios seguidos</span>
+          <span>Hacer los 15 ejercicios seguidos</span>
         </button>
       </div>
 
@@ -309,7 +309,7 @@
     <section id="workoutScreen" class="hidden space-y-5" aria-live="polite">
       <div class="card-box rounded-3xl p-5 space-y-4">
         <div class="flex items-center justify-between gap-2 text-base font-bold">
-          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 10</span>
+          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 15</span>
           <span id="intensityBadge" class="px-3 py-1 rounded-full border border-current">Nivel: Suave</span>
         </div>
 
@@ -374,12 +374,13 @@
   </main>
 
   <script>
+    // Catálogo completo de 150 ejercicios 100% en silla (15 ejercicios por categoría x 10 categorías)
     const CATEGORIES = [
       {
         id: "fuerza",
         name: "Fuerza y Tono en Silla",
         icon: "🏋️",
-        desc: "10 ejercicios de resistencia segura sin levantarte",
+        desc: "15 ejercicios de resistencia segura sin levantarte",
         exercises: [
           { name: "Press de pecho con resistencia", desc: "Con la espalda apoyada, empuja ambas manos al frente soltando el aire y vuelve despacio al pecho.", tip: "Seguridad: No aguantes la respiración al empujar; puedes sujetar una botella pequeña.", anim: "pulse", pose: "armsFront" },
           { name: "Remo con pausa atrás", desc: "Estira brazos al frente y tira de los codos hacia atrás apretando la espalda 3 segundos.", tip: "Seguridad: Mantén los hombros bajos lejos de las orejas.", anim: "pulse", pose: "biceps" },
@@ -390,14 +391,19 @@
           { name: "Curl de bíceps con bajada lenta", desc: "Dobla los codos llevando manos a los hombros y baja contando despacio hasta 4.", tip: "Seguridad: Mantén los codos pegados a los costados.", anim: "float", pose: "biceps" },
           { name: "Empuje de talones contra el suelo", desc: "Con los pies apoyados, presiona firme los talones contra el suelo durante 4 segundos y relaja.", tip: "Seguridad: Activa piernas y glúteos sin mover las rodillas.", anim: "pulse", pose: "feet" },
           { name: "Apertura con resistencia imaginaria", desc: "Con los codos doblados pegados al cuerpo, abre las manos hacia afuera apretando la espalda.", tip: "Seguridad: Fortalece los hombros con recorrido corto y seguro.", anim: "pulse", pose: "armsWide" },
-          { name: "Plancha abdominal sentado", desc: "Apoya las manos en los muslos, alarga la espalda y contrae suavemente el abdomen 5 segundos.", tip: "Seguridad: Sigue respirando corto y suave sin contener el aire.", anim: "pulse", pose: "core" }
+          { name: "Plancha abdominal sentado", desc: "Apoya las manos en los muslos, alarga la espalda y contrae suavemente el abdomen 5 segundos.", tip: "Seguridad: Sigue respirando corto y suave sin contener el aire.", anim: "pulse", pose: "core" },
+          { name: "Presión de manos sobre muslos", desc: "Coloca las palmas encima de los muslos y empuja fuerte hacia abajo 4 segundos activando brazos y abdomen.", tip: "Seguridad: Suelta el aire despacio mientras presionas.", anim: "pulse", pose: "chairPush" },
+          { name: "Extensión de tríceps hacia atrás", desc: "Inclina un poco el tronco recto y lleva las manos estiradas hacia atrás como empujando el aire.", tip: "Tonifica la parte posterior de los brazos sin pesas.", anim: "float", pose: "chairPush" },
+          { name: "Elevación de rodilla con resistencia", desc: "Coloca tus manos sobre la rodilla derecha y haz fuerza suave hacia arriba mientras frenas con las manos 3 segundos.", tip: "Seguridad: Alterna pierna derecha e izquierda respirando continuo.", anim: "pulse", pose: "march" },
+          { name: "Press vertical alterno controlado", desc: "Empuja una mano hacia el techo en 2 segundos y bájala en 3 segundos; alterna derecha e izquierda.", tip: "Seguridad: Sube solo hasta donde el hombro esté cómodo.", anim: "float", pose: "armsUp" },
+          { name: "Isométrico de glúteos sentado", desc: "Contrae ambos glúteos con firmeza durante 4 segundos como creciendo un centímetro en la silla y relaja.", tip: "Fortalece la base de apoyo sin mover las articulaciones.", anim: "pulse", pose: "core" }
         ]
       },
       {
         id: "cuello",
         name: "Cuello y Hombros",
         icon: "🧣",
-        desc: "10 ejercicios suaves para aliviar tensión cervical",
+        desc: "15 ejercicios suaves para aliviar tensión cervical",
         exercises: [
           { name: "Giro suave de cuello", desc: "Mira despacio hacia la derecha, pasa por el centro y mira hacia la izquierda.", tip: "Seguridad: Movimiento lento, sin llegar nunca al límite de dolor.", anim: "sway", pose: "neck" },
           { name: "Inclinación de oreja al hombro", desc: "Acerca suavemente la oreja derecha al hombro derecho 2 segundos y cambia al lado izquierdo.", tip: "Seguridad: Deja ambos hombros relajados hacia abajo.", anim: "sway", pose: "neck" },
@@ -408,14 +414,19 @@
           { name: "Círculos de hombros adelante", desc: "Gira suavemente ambos hombros hacia adelante para soltar la parte alta de la espalda.", tip: "Haz círculos cómodos sin encorvar demasiado.", anim: "float", pose: "shoulders" },
           { name: "Semicírculo frontal de cuello", desc: "Con la barbilla cerca del pecho, deslízala despacio hacia un hombro y luego al otro.", tip: "Seguridad: Mantén el recorrido solo por delante.", anim: "sway", pose: "neck" },
           { name: "Hombros alternos arriba y abajo", desc: "Sube el hombro derecho mientras bajas el izquierdo, y alterna despacio.", tip: "Acompaña con respiración tranquila.", anim: "sway", pose: "shoulders" },
-          { name: "Retracción suave de barbilla", desc: "Lleva la cabeza ligeramente hacia atrás alineando orejas con hombros y relaja.", tip: "Corrige la postura adelantada al leer o usar el móvil.", anim: "pulse", pose: "neck" }
+          { name: "Retracción suave de barbilla", desc: "Lleva la cabeza ligeramente hacia atrás alineando orejas con hombros y relaja.", tip: "Corrige la postura adelantada al leer o usar el móvil.", anim: "pulse", pose: "neck" },
+          { name: "Deslizamiento de omóplatos atrás", desc: "Lleva los hombros suavemente hacia atrás juntando las paletillas 3 segundos y suelta.", tip: "Abre el pecho y descarga la zona cervical.", anim: "pulse", pose: "shoulders" },
+          { name: "Mirada diagonal abajo", desc: "Gira un poco la cabeza a la derecha y baja suavemente la mirada hacia el bolsillo; cambia de lado.", tip: "Estira los músculos laterales posteriores del cuello.", anim: "sway", pose: "neck" },
+          { name: "Círculo unilateral de hombro", desc: "Dibuja círculos lentos hacia atrás solo con el hombro derecho y luego cambia al izquierdo.", tip: "Permite concentrarte en soltar cada lado por separado.", anim: "float", pose: "shoulders" },
+          { name: "Asentir muy suave (Sí corto)", desc: "Haz un movimiento de asentir muy pequeño y lento con la cabeza, como diciendo sí.", tip: "Lubrica la unión entre cráneo y primera vértebra.", anim: "float", pose: "neck" },
+          { name: "Negar muy suave (No corto)", desc: "Mueve la cabeza de un lado a otro en un recorrido muy corto y rápido-suave como diciendo no.", tip: "Seguridad: Movimiento minúsculo y sin tensión.", anim: "sway", pose: "neck" }
         ]
       },
       {
         id: "brazos",
         name: "Brazos y Movilidad Superior",
         icon: "💪",
-        desc: "10 ejercicios para mover brazos y abrir el pecho",
+        desc: "15 ejercicios para mover brazos y abrir el pecho",
         exercises: [
           { name: "Elevación frontal de brazos", desc: "Sube ambos brazos al frente hasta la altura de los hombros y baja despacio.", tip: "Seguridad: Mantén la espalda apoyada para no arquear la zona lumbar.", anim: "float", pose: "armsUp" },
           { name: "Empuje suave al frente", desc: "Con las manos a la altura del pecho, empuja adelante soltando el aire y vuelve.", tip: "Movimiento fluido sin bloquear los codos.", anim: "pulse", pose: "armsFront" },
@@ -426,14 +437,19 @@
           { name: "Círculos pequeños con brazos", desc: "Con los brazos ligeramente abiertos a los lados, dibuja círculos pequeños y suaves.", tip: "Si notas cansancio, baja un poco los brazos.", anim: "pulse", pose: "armsWide" },
           { name: "Aleteo suave de codos", desc: "Apoya los dedos sobre los hombros y sube y baja los codos suavemente como alas.", tip: "Muy seguro para mejorar movilidad sin sobrecargar.", anim: "float", pose: "shoulders" },
           { name: "Empuje hacia el suelo", desc: "Con las palmas mirando hacia abajo, presiona el aire hacia el suelo a ambos lados.", tip: "Estira el cuello mientras activas los brazos.", anim: "float", pose: "chairPush" },
-          { name: "Cruce suave de brazos", desc: "Cruza los brazos por delante del pecho dándote un abrazo y ábrelos de nuevo.", tip: "Alterna qué brazo pasa por encima en cada repetición.", anim: "pulse", pose: "armsWide" }
+          { name: "Cruce suave de brazos", desc: "Cruza los brazos por delante del pecho dándote un abrazo y ábrelos de nuevo.", tip: "Alterna qué brazo pasa por encima en cada repetición.", anim: "pulse", pose: "armsWide" },
+          { name: "Círculos de codos con manos en hombros", desc: "Con los dedos apoyados en los hombros, dibuja círculos amplios hacia atrás con ambos codos.", tip: "Excelente para desbloquear hombros rígidos.", anim: "float", pose: "shoulders" },
+          { name: "Empuje en V hacia arriba", desc: "Desde los hombros, estira ambos brazos en diagonal formando una V amplia y baja despacio.", tip: "Seguridad: Mantén el cuello largo y relajado.", anim: "float", pose: "armsUp" },
+          { name: "Brazos en candelabro (W a Y)", desc: "Dobla los codos a los lados en forma de W y sube las manos suavemente hacia arriba.", tip: "Fortalece la musculatura postural de la espalda alta.", anim: "float", pose: "armsWide" },
+          { name: "Balanceo pendular de brazos", desc: "Deja caer ambos brazos relajados a los lados de la silla y balancéalos suavemente adelante y atrás.", tip: "Relaja profundamente la articulación del hombro.", anim: "sway", pose: "chairPush" },
+          { name: "Manos detrás de la nuca suave", desc: "Lleva las manos hacia las orejas o nuca abriendo los codos hacia afuera y vuelve a bajar.", tip: "Seguridad: No empujes la cabeza hacia adelante.", anim: "pulse", pose: "armsWide" }
         ]
       },
       {
         id: "manos",
         name: "Manos, Muñecas y Dedos",
         icon: "🖐️",
-        desc: "10 ejercicios para agilidad y alivio articular",
+        desc: "15 ejercicios para agilidad y alivio articular",
         exercises: [
           { name: "Abrir y cerrar puños", desc: "Cierra las manos formando un puño suave y ábrelas estirando bien todos los dedos.", tip: "Activa el retorno venoso de manos y antebrazos.", anim: "pulse", pose: "hands" },
           { name: "Pinza dedo a dedo", desc: "Toca la punta del pulgar con índice, corazón, anular y meñique en ambas manos.", tip: "Trabaja la precisión y coordinación fina.", anim: "pulse", pose: "hands" },
@@ -444,14 +460,19 @@
           { name: "Saludo de muñecas", desc: "Apoya los antebrazos en los muslos y sube y baja las manos moviendo solo la muñeca.", tip: "Alivia la rigidez matinal en muñecas.", anim: "float", pose: "hands" },
           { name: "Palmas arriba y abajo", desc: "Con los codos doblados, gira las palmas mirando al techo y luego mirando al suelo.", tip: "Moviliza el antebrazo con suavidad.", anim: "sway", pose: "hands" },
           { name: "Garra suave de dedos", desc: "Dobla solo las articulaciones medias de los dedos formando una garra y estira.", tip: "Excelente para rigidez por artrosis leve.", anim: "pulse", pose: "hands" },
-          { name: "Círculos con los pulgares", desc: "Cierra suavemente los cuatro dedos y gira ambos pulgares en círculos amplios.", tip: "Alivia tensión en la base del pulgar.", anim: "sway", pose: "hands" }
+          { name: "Círculos con los pulgares", desc: "Cierra suavemente los cuatro dedos y gira ambos pulgares en círculos amplios.", tip: "Alivia tensión en la base del pulgar.", anim: "sway", pose: "hands" },
+          { name: "Desviación lateral de muñecas", desc: "Con las palmas hacia abajo sobre los muslos, lleva las manos suavemente hacia los lados como limpiaparabrisas.", tip: "Mejora la movilidad lateral de la muñeca.", anim: "sway", pose: "hands" },
+          { name: "Pulgar a la base del meñique", desc: "Lleva la punta del pulgar hasta tocar la base del dedo meñique y vuelve a abrir la mano.", tip: "Mantiene flexible la articulación del pulgar.", anim: "pulse", pose: "hands" },
+          { name: "Masaje entre dedos", desc: "Entrelaza los dedos de ambas manos y aprieta suavemente durante 3 segundos antes de soltar.", tip: "Estimula la circulación y alivia manos frías.", anim: "pulse", pose: "prayer" },
+          { name: "Toque rápido de yemas", desc: "Junta las yemas de todos los dedos de ambas manos formando una tienda y presiónalas suave.", tip: "Mejora la fuerza y sensibilidad de los dedos.", anim: "pulse", pose: "prayer" },
+          { name: "Sacudida suave de manos", desc: "Deja las muñecas muy sueltas y sacude suavemente las manos como quitando gotas de agua.", tip: "Relaja instantáneamente dedos y antebrazos.", anim: "cardio", pose: "hands" }
         ]
       },
       {
         id: "tronco",
         name: "Tronco y Espalda",
         icon: "🧍",
-        desc: "10 ejercicios para postura y estabilidad sentado",
+        desc: "15 ejercicios para postura y estabilidad sentado",
         exercises: [
           { name: "Giro suave de cintura", desc: "Cruza los brazos sobre el pecho y gira despacio hacia la derecha y hacia la izquierda.", tip: "Seguridad: Mantén ambas caderas apoyadas en el asiento.", anim: "sway", pose: "twist" },
           { name: "Inclinación lateral sentado", desc: "Deja caer la mano derecha hacia el suelo por el lado de la silla y vuelve al centro; cambia.", tip: "Seguridad: No inclines tanto como para perder estabilidad.", anim: "sway", pose: "sideBend" },
@@ -462,14 +483,19 @@
           { name: "Inclinación adelante con espalda recta", desc: "Con manos en muslos y espalda recta, inclínate un poco adelante y vuelve al respaldo.", tip: "Seguridad: Mantén la mirada al frente, sin redondear la espalda.", anim: "float", pose: "core" },
           { name: "Giro con apoyo en muslo", desc: "Apoya la mano derecha en el muslo izquierdo y gira suavemente el pecho a la izquierda; cambia.", tip: "Haz el giro acompañando con una exhalación lenta.", anim: "sway", pose: "twist" },
           { name: "Basculación pélvica sentado", desc: "Redondea suavemente la zona lumbar apoyándola atrás y vuelve a enderezar la pelvis.", tip: "Desbloquea la parte baja de la espalda.", anim: "pulse", pose: "core" },
-          { name: "Alcance diagonal al frente", desc: "Estira el brazo derecho en diagonal hacia adelante y vuelve; alterna con el izquierdo.", tip: "Activa los músculos laterales del tronco.", anim: "sway", pose: "armsFront" }
+          { name: "Alcance diagonal al frente", desc: "Estira el brazo derecho en diagonal hacia adelante y vuelve; alterna con el izquierdo.", tip: "Activa los músculos laterales del tronco.", anim: "sway", pose: "armsFront" },
+          { name: "Codo a rodilla contraria suave", desc: "Con manos en hombros, acerca suavemente el codo derecho hacia la rodilla izquierda sin forzar; cambia.", tip: "Seguridad: Haz solo medio recorrido manteniendo el abdomen firme.", anim: "sway", pose: "twist" },
+          { name: "Despegue suave del respaldo", desc: "Separa la espalda 3 centímetros del respaldo manteniendo la columna recta 4 segundos y vuelve a apoyar.", tip: "Fortalece los músculos profundos que sostienen la espalda.", anim: "float", pose: "core" },
+          { name: "Balanceo lateral de peso en caderas", desc: "Carga un poco más el peso en el glúteo derecho y luego en el izquierdo suavemente.", tip: "Mejora la movilidad pélvica y el equilibrio sentado.", anim: "sway", pose: "core" },
+          { name: "Extensión dorsal con manos en pecho", desc: "Cruza las manos sobre el esternón y eleva suavemente el pecho mirando un poco hacia arriba.", tip: "Compensa las horas sentado mirando hacia abajo.", anim: "float", pose: "prayer" },
+          { name: "Estiramiento lateral con mano en cintura", desc: "Pon una mano en la cintura y desliza la otra por el costado hacia abajo; alterna lados.", tip: "Mantiene flexible la cintura sin perder apoyo.", anim: "sway", pose: "sideBend" }
         ]
       },
       {
         id: "piernas",
         name: "Piernas y Pies",
         icon: "🦵",
-        desc: "10 ejercicios para circulación y fuerza en piernas",
+        desc: "15 ejercicios para circulación y fuerza en piernas",
         exercises: [
           { name: "Marcha suave sentado", desc: "Levanta alternativamente la rodilla derecha y la izquierda como caminando sentado.", tip: "Apoya todo el pie en el suelo en cada paso.", anim: "float", pose: "march" },
           { name: "Extensión alterna de pierna", desc: "Estira la pierna derecha al frente 2 segundos, baja despacio y repite con la izquierda.", tip: "Fortalece los muslos para levantarse con más facilidad.", anim: "pulse", pose: "legExt" },
@@ -480,14 +506,19 @@
           { name: "Balanceo punta-talón", desc: "Sube talones apoyando puntas y luego apoya talones subiendo puntas de forma continua.", tip: "Excelente para activar la circulación en reposo.", anim: "float", pose: "feet" },
           { name: "Paso lateral sentado", desc: "Abre el pie derecho hacia un lado tocando el suelo y vuelve al centro; cambia al izquierdo.", tip: "Mejora la movilidad lateral de la cadera.", anim: "sway", pose: "march" },
           { name: "Escribir vocales con el pie", desc: "Levanta ligeramente un pie y dibuja las vocales en el aire con la punta.", tip: "Trabaja todos los ángulos del tobillo.", anim: "sway", pose: "feet" },
-          { name: "Deslizamiento de talón", desc: "Desliza el talón derecho hacia adelante por el suelo hasta estirar la pierna y recógelo.", tip: "Alternativa muy suave si cuesta elevar la pierna.", anim: "pulse", pose: "legExt" }
+          { name: "Deslizamiento de talón", desc: "Desliza el talón derecho hacia adelante por el suelo hasta estirar la pierna y recógelo.", tip: "Alternativa muy suave si cuesta elevar la pierna.", anim: "pulse", pose: "legExt" },
+          { name: "Toque de talón adelante y punta atrás", desc: "Toca el suelo adelante con el talón derecho y luego atrás junto a la silla con la punta; cambia.", tip: "Moviliza rodilla, cadera y tobillo con control.", anim: "float", pose: "legExt" },
+          { name: "Elevación alterna de talones", desc: "Sube el talón derecho mientras el izquierdo apoya, y cambia como pedaleando despacio.", tip: "Favorece la circulación continua en pantorrillas.", anim: "float", pose: "feet" },
+          { name: "Círculos suaves con la rodilla", desc: "Levanta un poco el pie derecho y dibuja pequeños círculos en el aire con la rodilla; cambia.", tip: "Lubrica suavemente la articulación de la cadera.", anim: "sway", pose: "march" },
+          { name: "Arrugar toalla imaginaria con dedos", desc: "Con los pies apoyados, encoge todos los dedos de los pies como agarrando el suelo y suelta.", tip: "Fortalece la planta del pie y mejora el equilibrio.", anim: "pulse", pose: "feet" },
+          { name: "Péndulo suave de pierna", desc: "Con el muslo apoyado en el borde de la silla, balancea suavemente la pierna adelante y atrás.", tip: "Relaja y lubrica la rodilla sin carga.", anim: "sway", pose: "legExt" }
         ]
       },
       {
         id: "cardio",
         name: "Cardio Suave (Quema Calorías)",
         icon: "🔥",
-        desc: "10 ejercicios rítmicos para activar el corazón sentado",
+        desc: "15 ejercicios rítmicos para activar el corazón sentado",
         exercises: [
           { name: "Marcha rápida con braceo", desc: "Mueve piernas y brazos a buen ritmo como caminando rápido sin levantarte de la silla.", tip: "Seguridad cardio: Mantén un ritmo donde puedas hablar sin ahogarte.", anim: "cardio", pose: "march" },
           { name: "Golpes alternos al frente", desc: "Lanza los puños hacia adelante alternando derecho e izquierdo con energía controlada.", tip: "Gira ligeramente los hombros con cada golpe.", anim: "cardio", pose: "armsFront" },
@@ -498,14 +529,19 @@
           { name: "Golpes suaves hacia arriba", desc: "Lanza un puño hacia arriba y luego el otro de forma continua y ligera.", tip: "Eleva suavemente las pulsaciones.", anim: "cardio", pose: "armsUp" },
           { name: "Patadas alternas dinámicas", desc: "Estira una pierna y luego la otra al frente de forma fluida acompañando con los brazos.", tip: "No des golpes bruscos con la rodilla al estirar.", anim: "cardio", pose: "legExt" },
           { name: "Paso en V sentado", desc: "Abre un pie adelante-afuera, luego el otro, y vuélvelos a juntar en el centro.", tip: "Acompaña con una palmada al abrir los pies.", anim: "cardio", pose: "march" },
-          { name: "Braceo de carrera sentado", desc: "Con los codos doblados, mueve los brazos rápido adelante y atrás como corriendo.", tip: "Puedes acompañar moviendo rápido las puntas de los pies.", anim: "cardio", pose: "biceps" }
+          { name: "Braceo de carrera sentado", desc: "Con los codos doblados, mueve los brazos rápido adelante y atrás como corriendo.", tip: "Puedes acompañar moviendo rápido las puntas de los pies.", anim: "cardio", pose: "biceps" },
+          { name: "Boxeo cruzado al frente", desc: "Lanza el puño derecho en diagonal hacia la izquierda y el izquierdo hacia la derecha al ritmo.", tip: "Activa cintura y brazos quemando más energía.", anim: "cardio", pose: "twist" },
+          { name: "Toques laterales de pie con brazos", desc: "Toca el suelo al lado derecho con el pie mientras abres brazos; cambia rápido al lado izquierdo.", tip: "Ritmo constante y respiración fluida.", anim: "cardio", pose: "armsWide" },
+          { name: "Escalador sentado", desc: "Sube rodilla derecha y brazo izquierdo arriba a la vez, y cambia rápido como subiendo una escalera.", tip: "Excelente ejercicio cardiovascular seguro en silla.", anim: "cardio", pose: "armsUp" },
+          { name: "Círculos rápidos de brazos al frente", desc: "Con los puños cerrados a la altura del pecho, gira los antebrazos rápido uno alrededor del otro.", tip: "Puedes acompañarlo con pasos rápidos en el sitio.", anim: "cardio", pose: "armsFront" },
+          { name: "Doble paso lateral sentado", desc: "Abre dos veces el pie derecho hacia el lado dando palmas y luego dos veces el pie izquierdo.", tip: "Divertido, rítmico y muy bueno para activar el corazón.", anim: "cardio", pose: "march" }
         ]
       },
       {
         id: "coordinacion",
         name: "Coordinación y Agilidad",
         icon: "🧠",
-        desc: "10 ejercicios para conectar mente y cuerpo",
+        desc: "15 ejercicios para conectar mente y cuerpo",
         exercises: [
           { name: "Mano a rodilla contraria", desc: "Toca la rodilla izquierda con la mano derecha, vuelve y toca la derecha con la izquierda.", tip: "Estimula la atención y la coordinación cruzada.", anim: "sway", pose: "twist" },
           { name: "Brazo y pierna contrarios", desc: "Sube el brazo derecho al frente mientras estiras la pierna izquierda; alterna.", tip: "Hazlo despacio buscando equilibrio y control.", anim: "pulse", pose: "legExt" },
@@ -516,14 +552,19 @@
           { name: "Nariz y oreja alternando", desc: "Toca la punta de tu nariz con una mano y la oreja contraria con la otra; cambia.", tip: "Ejercicio divertido de agilidad mental.", anim: "sway", pose: "biceps" },
           { name: "Nado estilo espalda sentado", desc: "Gira un brazo hacia atrás y luego el otro como nadando de espaldas.", tip: "Abre el pecho y mejora la movilidad de hombros.", anim: "sway", pose: "armsUp" },
           { name: "Ritmo de muslos y palmas", desc: "Da dos toques suaves en tus muslos, una palmada y abre los brazos a los lados.", tip: "Sigue un ritmo tranquilo y constante.", anim: "pulse", pose: "prayer" },
-          { name: "Talón derecho y brazo izquierdo", desc: "Toca adelante con el talón derecho mientras elevas el brazo izquierdo; cambia.", tip: "Mantén la espalda erguida y apoyada.", anim: "pulse", pose: "legExt" }
+          { name: "Talón derecho y brazo izquierdo", desc: "Toca adelante con el talón derecho mientras elevas el brazo izquierdo; cambia.", tip: "Mantén la espalda erguida y apoyada.", anim: "pulse", pose: "legExt" },
+          { name: "Dirección de orquesta", desc: "Dibuja un triángulo en el aire con ambas manos a la vez: arriba, abajo-fuera y centro.", tip: "Trabaja la precisión espacial de ambos brazos.", anim: "sway", pose: "armsUp" },
+          { name: "Un brazo sube y otro abre", desc: "Sube el brazo derecho al frente mientras abres el brazo izquierdo al lado; luego invierte.", tip: "Gran reto suave para la agilidad cerebral.", anim: "pulse", pose: "armsWide" },
+          { name: "Talón contrario con mano", desc: "Sube un poco el pie izquierdo por delante y tócalo suave con la mano derecha; alterna.", tip: "Seguridad: Sube el pie hacia la mano sin doblar demasiado la espalda.", anim: "sway", pose: "march" },
+          { name: "Secuencia de dedos 1-2-3-4", desc: "Cuenta del 1 al 4 tocando cada dedo con el pulgar hacia adelante y luego hacia atrás.", tip: "Mantiene la agilidad mental y manual.", anim: "pulse", pose: "hands" },
+          { name: "Palmada arriba y toque de rodillas", desc: "Da una palmada suave por encima de la cabeza y luego toca ambas rodillas al ritmo.", tip: "Coordina tren superior e inferior con alegría.", anim: "float", pose: "armsUp" }
         ]
       },
       {
         id: "estiramientos",
         name: "Estiramientos y Alivio Lumbar",
         icon: "🌿",
-        desc: "10 estiramientos suaves para espalda y piernas",
+        desc: "15 estiramientos suaves para espalda y piernas",
         exercises: [
           { name: "Gato-Vaca sentado", desc: "Con manos en rodillas, saca pecho mirando al frente y luego redondea suavemente la espalda.", tip: "Alivia la rigidez de toda la columna.", anim: "sway", pose: "core" },
           { name: "Abrazo de rodilla al pecho", desc: "Sujeta la rodilla derecha con ambas manos y acércala suave al pecho 4 segundos; cambia.", tip: "Estira suavemente la zona lumbar y el glúteo.", anim: "float", pose: "march" },
@@ -534,14 +575,19 @@
           { name: "Estiramiento de tríceps suave", desc: "Lleva la mano derecha hacia el hombro derecho y empuja suave el codo hacia arriba; cambia.", tip: "Estira la parte posterior del brazo sin forzar.", anim: "float", pose: "biceps" },
           { name: "Cruce suave de tobillo", desc: "Cruza un tobillo sobre el otro abajo (o sobre la rodilla si es cómodo) y mantén.", tip: "Relaja la musculatura profunda de la cadera.", anim: "pulse", pose: "march" },
           { name: "Estiramiento lateral de cuello", desc: "Inclina la cabeza a un lado y apoya suavemente la mano encima sin tirar.", tip: "El propio peso de la mano es suficiente.", anim: "sway", pose: "neck" },
-          { name: "Estiramiento de espalda alta", desc: "Entrelaza los dedos y empuja las palmas hacia adelante redondeando un poco los hombros.", tip: "Separa los omóplatos y alivia tensión dorsal.", anim: "pulse", pose: "armsFront" }
+          { name: "Estiramiento de espalda alta", desc: "Entrelaza los dedos y empuja las palmas hacia adelante redondeando un poco los hombros.", tip: "Separa los omóplatos y alivia tensión dorsal.", anim: "pulse", pose: "armsFront" },
+          { name: "Estiramiento de antebrazo hacia abajo", desc: "Estira un brazo al frente con los dedos mirando al suelo y presiona suave el dorso de la mano.", tip: "Alivia tensión en muñecas y antebrazos.", anim: "float", pose: "armsFront" },
+          { name: "Estiramiento cruzado de hombro", desc: "Pasa el brazo derecho por delante del pecho y acércalo suave con la mano izquierda; cambia.", tip: "Relaja la parte externa del hombro.", anim: "pulse", pose: "armsFront" },
+          { name: "Estiramiento de gemelo sentado", desc: "Estira una pierna apoyando el talón en el suelo y tira de los dedos del pie hacia ti 4 segundos.", tip: "Notarás un alivio suave en toda la pantorrilla.", anim: "pulse", pose: "feet" },
+          { name: "Apertura de cadera en mariposa sentado", desc: "Junta las plantas de los pies en el suelo y deja caer suavemente las rodillas hacia afuera.", tip: "Estira la cara interna de los muslos con total seguridad.", anim: "pulse", pose: "march" },
+          { name: "Estiramiento diagonal arriba", desc: "Entrelaza las manos y estira suavemente hacia arriba y un poco a la derecha; luego a la izquierda.", tip: "Descomprime toda la columna vertebral.", anim: "sway", pose: "armsUp" }
         ]
       },
       {
         id: "calma",
         name: "Respiración y Calma",
         icon: "🕊️",
-        desc: "10 ejercicios de relajación y vuelta a la calma",
+        desc: "15 ejercicios de relajación y vuelta a la calma",
         exercises: [
           { name: "Respiración abdominal profunda", desc: "Pon las manos en el abdomen, inspira inflando la tripa y suelta el aire muy despacio.", tip: "Activa la respuesta natural de relajación del cuerpo.", anim: "float", pose: "core" },
           { name: "Abrir brazos al inspirar", desc: "Sube los brazos por los lados tomando aire por la nariz y bájalos soltando por la boca.", tip: "Sincroniza cada movimiento con tu respiración.", anim: "float", pose: "armsWide" },
@@ -552,7 +598,12 @@
           { name: "Suspiro largo de alivio", desc: "Toma aire profundo por la nariz y suéltalo con un suspiro largo y relajado.", tip: "Libera tensión acumulada en el pecho.", anim: "float", pose: "core" },
           { name: "Manos al corazón y abdomen", desc: "Coloca una mano en el pecho y otra en el abdomen sintiendo el vaivén de tu respiración.", tip: "Conecta con tu cuerpo en calma.", anim: "pulse", pose: "core" },
           { name: "Escaneo corporal sentado", desc: "Relaja primero los pies, luego piernas, manos, hombros y finalmente el rostro.", tip: "Disfruta de unos segundos de quietud.", anim: "float", pose: "neck" },
-          { name: "Saludo final de bienestar", desc: "Junta las palmas frente al pecho, inclina ligeramente la cabeza y respira profundo.", tip: "¡Has completado tu sesión de bienestar en silla!", anim: "pulse", pose: "prayer" }
+          { name: "Saludo final de bienestar", desc: "Junta las palmas frente al pecho, inclina ligeramente la cabeza y respira profundo.", tip: "¡Has completado tu sesión de bienestar en silla!", anim: "pulse", pose: "prayer" },
+          { name: "Respiración costal lateral", desc: "Coloca las manos a los lados de tus costillas y nota cómo se abren al tomar aire despacio.", tip: "Mejora la elasticidad de la caja torácica.", anim: "float", pose: "core" },
+          { name: "Exhalación prolongada con labios suaves", desc: "Toma aire en 3 segundos por la nariz y suéltalo muy despacio en 6 segundos como soplando una vela.", tip: "Reduce el estrés y baja las pulsaciones rápidamente.", anim: "float", pose: "neck" },
+          { name: "Automasaje circular en hombros", desc: "Con la mano derecha masajea suavemente el hombro izquierdo en círculos; luego cambia de lado.", tip: "Alivia puntos de carga en cuello y trapecio.", anim: "sway", pose: "shoulders" },
+          { name: "Calor de manos sobre los ojos", desc: "Frota tus palmas unos segundos para darles calor y apóyalas suavemente sobre tus ojos cerrados.", tip: "Descansa la vista y relaja la mente al instante.", anim: "pulse", pose: "prayer" },
+          { name: "Quietud y sonrisa suave", desc: "Apoya cómodamente la espalda, esboza una ligera sonrisa y respira natural disfrutando el descanso.", tip: "Termina tu rutina con serenidad y energía renovada.", anim: "float", pose: "neck" }
         ]
       }
     ];
@@ -1186,7 +1237,7 @@
 
     function shareAppWhatsApp() {
       const url = window.location.href;
-      const text = encodeURIComponent(`🪑 Te comparto SillaActiva, una web gratuita con 100 ejercicios fáciles y guiados por voz para hacer 100% sentado en silla: ${url}`);
+      const text = encodeURIComponent(`🪑 Te comparto SillaActiva, una web gratuita con 150 ejercicios fáciles y guiados por voz para hacer 100% sentado en silla: ${url}`);
       window.open(`https://wa.me/?text=${text}`, "_blank");
     }
 
