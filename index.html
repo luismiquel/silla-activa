@@ -108,7 +108,6 @@
     .anim-sway { animation: swaySlow 3s ease-in-out infinite; transform-origin: center bottom; }
     .anim-cardio { animation: fastPulse 1.2s ease-in-out infinite; transform-origin: center; }
 
-    /* Reducción de animaciones manual o del sistema */
     body.reduce-motion .anim-float,
     body.reduce-motion .anim-pulse,
     body.reduce-motion .anim-sway,
@@ -126,7 +125,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Modal de Seguridad Mejorado -->
+  <!-- Modal de Seguridad -->
   <div id="safetyModal" role="dialog" aria-modal="true" aria-labelledby="safetyTitle" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden">
     <div class="card-box max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 max-h-[92vh] overflow-y-auto">
       <div class="text-center">
@@ -175,8 +174,8 @@
         <button id="btnMotion" onclick="toggleMotion()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="false">
           🎞️ Animación: SÍ
         </button>
-        <button id="btnVoice" onclick="toggleVoice()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="true">
-          🔊 Voz: SÍ
+        <button id="btnVoice" onclick="cycleVoiceMode()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm">
+          🔊 Voz: Normal
         </button>
       </div>
     </div>
@@ -193,6 +192,12 @@
           <span class="px-3 py-1 rounded-full border border-current">✅ 100 ejercicios (10 por zona)</span>
           <span class="px-3 py-1 rounded-full border border-current">🏆 Sesiones: <span id="totalSessionsBadge">0</span></span>
           <span class="px-3 py-1 rounded-full border border-current">🔥 Racha: <span id="streakBadge">0</span> días</span>
+        </div>
+        <div class="pt-2">
+          <button onclick="shareAppWhatsApp()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base shadow">
+            <span aria-hidden="true">📲</span>
+            <span>Recomendar app por WhatsApp</span>
+          </button>
         </div>
       </div>
 
@@ -272,6 +277,34 @@
       </div>
     </section>
 
+    <!-- PANTALLA DE DETALLE DE CATEGORÍA (Catálogo Navegable) -->
+    <section id="categoryScreen" class="hidden space-y-5">
+      <div class="card-box rounded-3xl p-5 space-y-4">
+        <div class="flex items-center justify-between gap-3">
+          <button onclick="goHome()" class="px-4 py-2.5 rounded-2xl border-2 border-current font-extrabold text-base">
+            ⬅️ Volver
+          </button>
+          <span class="px-3 py-1 rounded-full border border-current text-sm font-bold">10 ejercicios</span>
+        </div>
+
+        <div class="text-center space-y-1">
+          <div id="catDetailIcon" class="text-5xl"></div>
+          <h2 id="catDetailTitle" class="text-2xl sm:text-3xl font-extrabold"></h2>
+          <p id="catDetailDesc" class="opacity-85 text-base sm:text-lg"></p>
+        </div>
+
+        <button id="btnStartWholeCat" class="btn-primary w-full rounded-3xl p-5 text-xl shadow-lg flex items-center justify-center gap-3">
+          <span>▶️</span>
+          <span>Hacer los 10 ejercicios seguidos</span>
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+        <h3 class="text-lg sm:text-xl font-extrabold px-1">O pulsa un ejercicio suelto para practicarlo:</h3>
+        <div id="catExercisesList" class="space-y-2.5"></div>
+      </div>
+    </section>
+
     <!-- PANTALLA DE EJERCICIO ACTIVO -->
     <section id="workoutScreen" class="hidden space-y-5" aria-live="polite">
       <div class="card-box rounded-3xl p-5 space-y-4">
@@ -299,10 +332,14 @@
           </div>
         </div>
 
-        <!-- Instrucción clara -->
-        <div class="p-4 rounded-2xl border-2 border-current/35 text-center space-y-2">
+        <!-- Instrucción clara + Botón Repetir Voz -->
+        <div class="p-4 rounded-2xl border-2 border-current/35 text-center space-y-3">
           <p id="exerciseDesc" class="text-lg sm:text-xl font-semibold leading-relaxed"></p>
           <p id="exerciseTip" class="text-sm sm:text-base font-bold opacity-90"></p>
+          <button onclick="repeatInstruction()" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border-2 border-current font-extrabold text-sm sm:text-base">
+            <span>🔊</span>
+            <span>Repetir explicación en voz alta</span>
+          </button>
         </div>
 
         <!-- Controles gigantes -->
@@ -322,6 +359,12 @@
         <h2 class="text-3xl sm:text-4xl font-extrabold">¡Rutina Completada!</h2>
         <p id="completeSummary" class="text-lg sm:text-xl opacity-95"></p>
         <div id="planCompleteNotice" class="hidden p-4 rounded-2xl border-2 border-green-600 font-bold text-green-800 bg-green-100"></div>
+
+        <button onclick="shareAchievementWhatsApp()" class="w-full rounded-3xl p-5 text-xl sm:text-2xl font-extrabold bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg flex items-center justify-center gap-3">
+          <span aria-hidden="true">📲</span>
+          <span>Compartir mi logro por WhatsApp</span>
+        </button>
+
         <button onclick="goHome()" class="btn-primary w-full rounded-3xl p-5 text-xl sm:text-2xl shadow-lg">
           🏠 Volver al Inicio
         </button>
@@ -331,7 +374,6 @@
   </main>
 
   <script>
-    // Catálogo de 100 ejercicios 100% en silla con instrucciones revisadas de seguridad y respiración
     const CATEGORIES = [
       {
         id: "fuerza",
@@ -574,7 +616,7 @@
 
     // Estado global
     let currentIntensity = "suave";
-    let voiceEnabled = true;
+    let voiceMode = "normal"; // "normal" | "lenta" | "off"
     let motionEnabled = true;
     let activeQueue = [];
     let currentIndex = 0;
@@ -586,24 +628,78 @@
     let activePlanContext = null;
     let sessionSecondsWorked = 0;
     let calendarDate = new Date();
+    let wakeLockSentinel = null;
+    let lastSpokenText = "";
+    let lastCompleteStats = { count: 10, level: "Suave", mins: 5 };
 
-    // Inicialización
+    // Inicialización y carga de preferencias
     window.addEventListener("DOMContentLoaded", () => {
+      loadUserPrefs();
       if (!localStorage.getItem("sillaActiva_safetyAccepted")) {
         document.getElementById("safetyModal").classList.remove("hidden");
       }
-      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        motionEnabled = false;
-        document.body.classList.add("reduce-motion");
-        document.getElementById("btnMotion").textContent = "🎞️ Animación: NO";
-        document.getElementById("btnMotion").setAttribute("aria-pressed", "true");
-      }
-      setIntensity("suave");
       renderCategories();
       renderPlanCard();
       updateStatsUI();
       renderCalendar();
     });
+
+    function loadUserPrefs() {
+      try {
+        const prefs = JSON.parse(localStorage.getItem("sillaActiva_prefs") || "{}");
+        if (prefs.highContrast) {
+          document.body.classList.add("high-contrast");
+          document.getElementById("btnContrast").setAttribute("aria-pressed", "true");
+        }
+        if (prefs.largeText) {
+          document.body.classList.add("large-text");
+          document.getElementById("btnTextSize").setAttribute("aria-pressed", "true");
+        }
+        if (typeof prefs.motionEnabled === "boolean") {
+          motionEnabled = prefs.motionEnabled;
+        } else if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          motionEnabled = false;
+        }
+        document.body.classList.toggle("reduce-motion", !motionEnabled);
+        document.getElementById("btnMotion").textContent = motionEnabled ? "🎞️ Animación: SÍ" : "🎞️ Animación: NO";
+
+        if (prefs.voiceMode) voiceMode = prefs.voiceMode;
+        updateVoiceButtonUI();
+
+        setIntensity(prefs.intensity || "suave", false);
+      } catch (e) {
+        setIntensity("suave", false);
+      }
+    }
+
+    function saveUserPrefs() {
+      const prefs = {
+        highContrast: document.body.classList.contains("high-contrast"),
+        largeText: document.body.classList.contains("large-text"),
+        motionEnabled,
+        voiceMode,
+        intensity: currentIntensity
+      };
+      localStorage.setItem("sillaActiva_prefs", JSON.stringify(prefs));
+    }
+
+    async function requestWakeLock() {
+      try {
+        if ("wakeLock" in navigator && !wakeLockSentinel) {
+          wakeLockSentinel = await navigator.wakeLock.request("screen");
+          wakeLockSentinel.addEventListener("release", () => { wakeLockSentinel = null; });
+        }
+      } catch (e) {}
+    }
+
+    function releaseWakeLock() {
+      try {
+        if (wakeLockSentinel) {
+          wakeLockSentinel.release();
+          wakeLockSentinel = null;
+        }
+      } catch (e) {}
+    }
 
     function acceptSafety() {
       localStorage.setItem("sillaActiva_safetyAccepted", "true");
@@ -618,11 +714,13 @@
     function toggleContrast() {
       const active = document.body.classList.toggle("high-contrast");
       document.getElementById("btnContrast").setAttribute("aria-pressed", String(active));
+      saveUserPrefs();
     }
 
     function toggleTextSize() {
       const active = document.body.classList.toggle("large-text");
       document.getElementById("btnTextSize").setAttribute("aria-pressed", String(active));
+      saveUserPrefs();
     }
 
     function toggleMotion() {
@@ -631,25 +729,52 @@
       const btn = document.getElementById("btnMotion");
       btn.textContent = motionEnabled ? "🎞️ Animación: SÍ" : "🎞️ Animación: NO";
       btn.setAttribute("aria-pressed", String(!motionEnabled));
+      saveUserPrefs();
     }
 
-    function toggleVoice() {
-      voiceEnabled = !voiceEnabled;
-      const btn = document.getElementById("btnVoice");
-      btn.textContent = voiceEnabled ? "🔊 Voz: SÍ" : "🔇 Voz: NO";
-      btn.setAttribute("aria-pressed", String(voiceEnabled));
-      if (!voiceEnabled && "speechSynthesis" in window) {
+    function cycleVoiceMode() {
+      if (voiceMode === "normal") voiceMode = "lenta";
+      else if (voiceMode === "lenta") voiceMode = "off";
+      else voiceMode = "normal";
+
+      updateVoiceButtonUI();
+      saveUserPrefs();
+
+      if (voiceMode === "off" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
+      } else if (voiceMode === "lenta") {
+        speak("Voz lenta activada");
+      } else {
+        speak("Voz normal activada");
       }
     }
 
+    function updateVoiceButtonUI() {
+      const btn = document.getElementById("btnVoice");
+      if (voiceMode === "normal") btn.textContent = "🔊 Voz: Normal";
+      else if (voiceMode === "lenta") btn.textContent = "🐢 Voz: Lenta";
+      else btn.textContent = "🔇 Voz: NO";
+    }
+
     function speak(text) {
-      if (!voiceEnabled || !("speechSynthesis" in window)) return;
+      lastSpokenText = text;
+      if (voiceMode === "off" || !("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "es-ES";
-      utter.rate = 0.94;
+      utter.rate = voiceMode === "lenta" ? 0.78 : 0.96;
       window.speechSynthesis.speak(utter);
+    }
+
+    function repeatInstruction() {
+      if (lastSpokenText) {
+        if (voiceMode === "off") {
+          voiceMode = "normal";
+          updateVoiceButtonUI();
+          saveUserPrefs();
+        }
+        speak(lastSpokenText);
+      }
     }
 
     function playTone(freq = 520, duration = 0.18) {
@@ -668,7 +793,7 @@
       } catch (e) {}
     }
 
-    function setIntensity(level) {
+    function setIntensity(level, persist = true) {
       currentIntensity = level;
       ["suave", "medio", "fuerte"].forEach(l => {
         const el = document.getElementById("int-" + l);
@@ -682,19 +807,57 @@
           el.style.backgroundColor = "";
         }
       });
+      if (persist) saveUserPrefs();
     }
 
     function renderCategories() {
       const grid = document.getElementById("categoriesGrid");
       grid.innerHTML = CATEGORIES.map(cat => `
-        <button onclick="startCategory('${cat.id}')" class="btn-secondary rounded-2xl p-4 text-left flex items-center gap-4 hover:shadow-md transition">
-          <span class="text-4xl" aria-hidden="true">${cat.icon}</span>
-          <div>
-            <div class="text-lg sm:text-xl font-extrabold">${cat.name}</div>
-            <div class="text-sm opacity-85 font-normal">${cat.desc}</div>
+        <button onclick="openCategoryDetail('${cat.id}')" class="btn-secondary rounded-2xl p-4 text-left flex items-center justify-between gap-3 hover:shadow-md transition">
+          <div class="flex items-center gap-3.5">
+            <span class="text-4xl" aria-hidden="true">${cat.icon}</span>
+            <div>
+              <div class="text-lg sm:text-xl font-extrabold">${cat.name}</div>
+              <div class="text-sm opacity-85 font-normal">${cat.desc}</div>
+            </div>
           </div>
+          <span class="text-xl font-bold opacity-70" aria-hidden="true">›</span>
         </button>
       `).join("");
+    }
+
+    function openCategoryDetail(catId) {
+      const cat = CATEGORIES.find(c => c.id === catId);
+      if (!cat) return;
+
+      document.getElementById("catDetailIcon").textContent = cat.icon;
+      document.getElementById("catDetailTitle").textContent = cat.name;
+      document.getElementById("catDetailDesc").textContent = cat.desc;
+      document.getElementById("btnStartWholeCat").onclick = () => startCategory(cat.id, false, 0);
+
+      const listEl = document.getElementById("catExercisesList");
+      listEl.innerHTML = cat.exercises.map((ex, idx) => `
+        <div class="card-box rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="font-extrabold text-lg">${idx + 1}. ${ex.name}</div>
+            <p class="text-sm sm:text-base opacity-85">${ex.desc}</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button onclick="startSingleExercise('${cat.id}', ${idx})" class="px-4 py-2.5 rounded-xl border-2 border-current font-extrabold text-sm whitespace-nowrap">
+              🎯 Solo este
+            </button>
+            <button onclick="startCategory('${cat.id}', false, ${idx})" class="px-4 py-2.5 rounded-xl bg-blue-700 text-white font-extrabold text-sm whitespace-nowrap">
+              ▶️ Desde aquí
+            </button>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("workoutScreen").classList.add("hidden");
+      document.getElementById("completeScreen").classList.add("hidden");
+      document.getElementById("categoryScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function getPlanProgress() {
@@ -770,7 +933,7 @@
       if (catId === "full") {
         startFullRoutine(true);
       } else {
-        startCategory(catId, true);
+        startCategory(catId, true, 0);
       }
     }
 
@@ -780,26 +943,36 @@
         const rand = Math.floor(Math.random() * cat.exercises.length);
         return { ...cat.exercises[rand], categoryName: cat.name };
       });
-      beginWorkout();
+      beginWorkout(0);
     }
 
-    function startCategory(catId, keepPlan = false) {
+    function startCategory(catId, keepPlan = false, startIndex = 0) {
       if (!keepPlan) activePlanContext = null;
       const cat = CATEGORIES.find(c => c.id === catId);
       activeQueue = cat.exercises.map(ex => ({ ...ex, categoryName: cat.name }));
-      beginWorkout();
+      beginWorkout(startIndex);
     }
 
-    function beginWorkout() {
-      currentIndex = 0;
+    function startSingleExercise(catId, exIndex) {
+      activePlanContext = null;
+      const cat = CATEGORIES.find(c => c.id === catId);
+      activeQueue = [{ ...cat.exercises[exIndex], categoryName: cat.name }];
+      beginWorkout(0);
+    }
+
+    function beginWorkout(startIndex = 0) {
+      currentIndex = startIndex;
       isRestPhase = false;
       isPaused = false;
       sessionSecondsWorked = 0;
       document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("categoryScreen").classList.add("hidden");
       document.getElementById("completeScreen").classList.add("hidden");
       document.getElementById("workoutScreen").classList.remove("hidden");
       document.getElementById("intensityBadge").textContent = "Nivel: " + INTENSITY_CONFIG[currentIntensity].label;
+      requestWakeLock();
       loadCurrentStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function buildChairSVG(pose, anim) {
@@ -933,7 +1106,6 @@
 
     function prevExercise() {
       if (isRestPhase) {
-        // Si estaba en descanso antes del ejercicio currentIndex, vuelve al ejercicio anterior
         isRestPhase = false;
         if (currentIndex > 0) currentIndex--;
         loadCurrentStep();
@@ -941,7 +1113,6 @@
         currentIndex--;
         loadCurrentStep();
       } else {
-        // Reinicia el primer ejercicio desde el principio
         loadCurrentStep();
       }
     }
@@ -961,12 +1132,14 @@
 
     function confirmExit() {
       clearInterval(timerInterval);
+      releaseWakeLock();
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       goHome();
     }
 
     function finishWorkout() {
       clearInterval(timerInterval);
+      releaseWakeLock();
       playTone(720, 0.35);
       speak("¡Enhorabuena! Has completado tu rutina de hoy.");
 
@@ -997,16 +1170,37 @@
       }
 
       const minsWorked = Math.max(1, Math.round(sessionSecondsWorked / 60));
+      lastCompleteStats = {
+        count: activeQueue.length,
+        level: INTENSITY_CONFIG[currentIntensity].label,
+        mins: minsWorked
+      };
+
       document.getElementById("completeSummary").textContent =
-        `Has completado ${activeQueue.length} ejercicios en nivel ${INTENSITY_CONFIG[currentIntensity].label} (aprox. ${minsWorked} min activos).`;
+        `Has completado ${lastCompleteStats.count} ejercicios en nivel ${lastCompleteStats.level} (aprox. ${lastCompleteStats.mins} min activos).`;
 
       document.getElementById("workoutScreen").classList.add("hidden");
       document.getElementById("completeScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function shareAppWhatsApp() {
+      const url = window.location.href;
+      const text = encodeURIComponent(`🪑 Te comparto SillaActiva, una web gratuita con 100 ejercicios fáciles y guiados por voz para hacer 100% sentado en silla: ${url}`);
+      window.open(`https://wa.me/?text=${text}`, "_blank");
+    }
+
+    function shareAchievementWhatsApp() {
+      const url = window.location.href;
+      const text = encodeURIComponent(`🎉 ¡Hoy he completado ${lastCompleteStats.count} ejercicios en silla (nivel ${lastCompleteStats.level}) con SillaActiva! Puedes probarla gratis aquí: ${url}`);
+      window.open(`https://wa.me/?text=${text}`, "_blank");
     }
 
     function goHome() {
       clearInterval(timerInterval);
+      releaseWakeLock();
       document.getElementById("workoutScreen").classList.add("hidden");
+      document.getElementById("categoryScreen").classList.add("hidden");
       document.getElementById("completeScreen").classList.add("hidden");
       document.getElementById("homeScreen").classList.remove("hidden");
       renderPlanCard();
@@ -1029,7 +1223,6 @@
       let streak = 0;
       const checkDate = new Date();
 
-      // Si hoy aún no se ha hecho sesión, empezar a contar desde ayer para no romper la racha activa
       if (!uniqueDates.has(formatDateKey(checkDate))) {
         checkDate.setDate(checkDate.getDate() - 1);
       }
