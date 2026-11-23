@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SillaActiva — Ejercicios Suaves en Silla</title>
+  <title>SillaActiva — 100 Ejercicios Seguros y Fáciles en Silla</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       --bg-main: #f8fafc;
       --bg-card: #ffffff;
       --text-main: #0f172a;
-      --text-muted: #475569;
+      --text-muted: #334155;
       --accent: #1d4ed8;
       --accent-hover: #1e40af;
       --border-color: #cbd5e1;
-      --success: #15803d;
+      --svg-primary: #1d4ed8;
+      --svg-secondary: #0f172a;
+      --svg-chair: #64748b;
     }
 
     body.high-contrast {
@@ -25,23 +27,37 @@
       --accent: #facc15;
       --accent-hover: #eab308;
       --border-color: #facc15;
-      --success: #4ade80;
+      --svg-primary: #facc15;
+      --svg-secondary: #ffffff;
+      --svg-chair: #94a3b8;
     }
 
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
       transition: background-color 0.2s, color 0.2s;
     }
 
     body.large-text {
       font-size: 1.25rem;
+      line-height: 1.7;
+    }
+
+    body.large-text p,
+    body.large-text li {
+      letter-spacing: 0.01em;
     }
 
     .card-box {
       background-color: var(--bg-card);
       border: 2px solid var(--border-color);
+    }
+
+    select {
+      background-color: var(--bg-card);
+      color: var(--text-main);
     }
 
     .btn-primary {
@@ -69,56 +85,75 @@
 
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-7px); }
+      50% { transform: translateY(-6px); }
     }
 
     @keyframes pulseMove {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+      50% { transform: scale(1.05); }
     }
 
     @keyframes swaySlow {
-      0%, 100% { transform: rotate(-6deg); }
-      50% { transform: rotate(6deg); }
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
     }
 
     @keyframes fastPulse {
       0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-5px) scale(1.04); }
+      50% { transform: translateY(-4px) scale(1.03); }
     }
 
-    .anim-float { animation: floatSlow 2.6s ease-in-out infinite; transform-origin: center; }
-    .anim-pulse { animation: pulseMove 2.2s ease-in-out infinite; transform-origin: center; }
-    .anim-sway { animation: swaySlow 2.8s ease-in-out infinite; transform-origin: center bottom; }
-    .anim-cardio { animation: fastPulse 1.1s ease-in-out infinite; transform-origin: center; }
+    .anim-float { animation: floatSlow 2.8s ease-in-out infinite; transform-origin: center; }
+    .anim-pulse { animation: pulseMove 2.4s ease-in-out infinite; transform-origin: center; }
+    .anim-sway { animation: swaySlow 3s ease-in-out infinite; transform-origin: center bottom; }
+    .anim-cardio { animation: fastPulse 1.2s ease-in-out infinite; transform-origin: center; }
+
+    /* Reducción de animaciones manual o del sistema */
+    body.reduce-motion .anim-float,
+    body.reduce-motion .anim-pulse,
+    body.reduce-motion .anim-sway,
+    body.reduce-motion .anim-cardio {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anim-float, .anim-pulse, .anim-sway, .anim-cardio {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Modal inicial de seguridad -->
-  <div id="safetyModal" class="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4 hidden">
-    <div class="card-box max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
+  <!-- Modal de Seguridad Mejorado -->
+  <div id="safetyModal" role="dialog" aria-modal="true" aria-labelledby="safetyTitle" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden">
+    <div class="card-box max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 max-h-[92vh] overflow-y-auto">
       <div class="text-center">
-        <div class="text-5xl mb-2">🪑</div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold">Antes de empezar</h2>
-        <p class="mt-2 opacity-90">Tres reglas sencillas para hacer ejercicio seguro:</p>
+        <div class="text-5xl mb-2" aria-hidden="true">🛡️</div>
+        <h2 id="safetyTitle" class="text-2xl sm:text-3xl font-extrabold">Consejos de Seguridad</h2>
+        <p class="mt-1 opacity-90">Lee estas 4 recomendaciones antes de empezar:</p>
       </div>
       <ul class="space-y-3 text-base sm:text-lg">
         <li class="flex items-start gap-3">
-          <span class="text-2xl">✅</span>
-          <span>Usa una <strong>silla firme, estable y sin ruedas</strong> apoyada en el suelo.</span>
+          <span class="text-2xl" aria-hidden="true">🪑</span>
+          <span><strong>Silla firme sin ruedas:</strong> Apóyala sobre una superficie que no resbale y mantén ambos pies planos en el suelo.</span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="text-2xl">💧</span>
-          <span>Ten un <strong>vaso de agua cerca</strong> y respira con normalidad sin aguantar el aire.</span>
+          <span class="text-2xl" aria-hidden="true">🌬️</span>
+          <span><strong>Nunca aguantes la respiración:</strong> Suelta el aire al hacer el esfuerzo (especialmente en ejercicios de fuerza) para cuidar tu tensión arterial.</span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="text-2xl">🛑</span>
-          <span>Muévete a tu ritmo. Si notas mareo o dolor agudo, <strong>detente y descansa</strong>.</span>
+          <span class="text-2xl" aria-hidden="true">💧</span>
+          <span><strong>Agua a mano y ritmo cómodo:</strong> Debes poder hablar con normalidad mientras haces los ejercicios.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-2xl" aria-hidden="true">🛑</span>
+          <span><strong>Cero dolor:</strong> Si sientes mareo, falta de aire o pinchazo articular, detente de inmediato y descansa.</span>
         </li>
       </ul>
       <button onclick="acceptSafety()" class="btn-primary w-full rounded-2xl text-xl shadow-lg">
-        Entendido, empezar
+        He leído los consejos, empezar
       </button>
     </div>
   </div>
@@ -127,17 +162,20 @@
   <header class="sticky top-0 z-40 card-box border-t-0 border-x-0 px-3 py-2.5 shadow-sm">
     <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <button onclick="goHome()" class="flex items-center gap-2 font-extrabold text-lg sm:text-xl px-2 py-1 rounded-xl">
-        <span>🪑</span>
+        <span aria-hidden="true">🪑</span>
         <span>SillaActiva</span>
       </button>
-      <div class="flex items-center gap-2">
-        <button id="btnContrast" onclick="toggleContrast()" class="px-3 py-2 rounded-xl border-2 border-current font-bold text-sm sm:text-base" aria-label="Cambiar contraste">
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <button id="btnContrast" onclick="toggleContrast()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="false">
           🌗 Contraste
         </button>
-        <button id="btnTextSize" onclick="toggleTextSize()" class="px-3 py-2 rounded-xl border-2 border-current font-bold text-sm sm:text-base" aria-label="Aumentar tamaño de letra">
+        <button id="btnTextSize" onclick="toggleTextSize()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="false">
           🔠 Letra +
         </button>
-        <button id="btnVoice" onclick="toggleVoice()" class="px-3 py-2 rounded-xl border-2 border-current font-bold text-sm sm:text-base" aria-label="Activar o desactivar voz">
+        <button id="btnMotion" onclick="toggleMotion()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="false">
+          🎞️ Animación: SÍ
+        </button>
+        <button id="btnVoice" onclick="toggleVoice()" class="px-2.5 py-2 rounded-xl border-2 border-current font-bold text-xs sm:text-sm" aria-pressed="true">
           🔊 Voz: SÍ
         </button>
       </div>
@@ -149,11 +187,11 @@
     <!-- PANTALLA DE INICIO -->
     <section id="homeScreen" class="space-y-6">
       <div class="card-box rounded-3xl p-5 sm:p-6 text-center space-y-3">
-        <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">Ejercicios Fáciles en Silla</h1>
-        <p class="opacity-90 text-base sm:text-lg">100 % sentado, sin complicaciones y guiado por voz paso a paso.</p>
-        <div class="flex flex-wrap justify-center gap-3 pt-1 text-sm sm:text-base font-bold">
-          <span class="px-3 py-1 rounded-full border border-current">✅ 54 ejercicios en silla</span>
-          <span class="px-3 py-1 rounded-full border border-current">🏆 Sesiones hechas: <span id="totalSessionsBadge">0</span></span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">100 Ejercicios Seguros en Silla</h1>
+        <p class="opacity-90 text-base sm:text-lg">100 % sentado, sin complicaciones y guiado por voz en español.</p>
+        <div class="flex flex-wrap justify-center gap-2.5 pt-1 text-sm sm:text-base font-bold">
+          <span class="px-3 py-1 rounded-full border border-current">✅ 100 ejercicios (10 por zona)</span>
+          <span class="px-3 py-1 rounded-full border border-current">🏆 Sesiones: <span id="totalSessionsBadge">0</span></span>
           <span class="px-3 py-1 rounded-full border border-current">🔥 Racha: <span id="streakBadge">0</span> días</span>
         </div>
       </div>
@@ -163,19 +201,19 @@
         <h2 class="text-xl font-extrabold text-center">1. Elige tu ritmo de hoy</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <button onclick="setIntensity('suave')" id="int-suave" class="btn-secondary rounded-2xl p-4 flex flex-col items-center justify-center text-center transition">
-            <span class="text-2xl">🌱</span>
+            <span class="text-2xl" aria-hidden="true">🌱</span>
             <span class="text-lg font-extrabold">Suave</span>
-            <span class="text-xs opacity-80">25-30s · Descanso 15s</span>
+            <span class="text-xs opacity-85">25s trabajo · 15s descanso</span>
           </button>
           <button onclick="setIntensity('medio')" id="int-medio" class="btn-secondary rounded-2xl p-4 flex flex-col items-center justify-center text-center transition">
-            <span class="text-2xl">☀️</span>
+            <span class="text-2xl" aria-hidden="true">☀️</span>
             <span class="text-lg font-extrabold">Medio</span>
-            <span class="text-xs opacity-80">35-45s · Descanso 12s</span>
+            <span class="text-xs opacity-85">40s trabajo · 12s descanso</span>
           </button>
           <button onclick="setIntensity('fuerte')" id="int-fuerte" class="btn-secondary rounded-2xl p-4 flex flex-col items-center justify-center text-center transition">
-            <span class="text-2xl">🔥</span>
+            <span class="text-2xl" aria-hidden="true">🔥</span>
             <span class="text-lg font-extrabold">Fuerte</span>
-            <span class="text-xs opacity-80">50-60s · Descanso 10s</span>
+            <span class="text-xs opacity-85">55s trabajo · 10s descanso</span>
           </button>
         </div>
       </div>
@@ -183,8 +221,8 @@
       <!-- Botón principal Rutina Completa -->
       <div class="space-y-3">
         <button onclick="startFullRoutine()" class="btn-primary w-full rounded-3xl p-5 text-xl sm:text-2xl shadow-lg flex items-center justify-center gap-3">
-          <span>▶️</span>
-          <span>Empezar Rutina Completa (9 ejercicios)</span>
+          <span aria-hidden="true">▶️</span>
+          <span>Empezar Rutina Completa (10 variados)</span>
         </button>
       </div>
 
@@ -192,10 +230,11 @@
       <div class="card-box rounded-3xl p-5 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <h2 class="text-xl font-extrabold">📅 Planes Guiados de 7 Días</h2>
-          <select id="planSelector" onchange="renderPlanCard()" class="px-3 py-2 rounded-xl border-2 border-current font-bold bg-transparent text-base">
+          <select id="planSelector" onchange="renderPlanCard()" aria-label="Seleccionar plan de 7 días" class="px-3 py-2 rounded-xl border-2 border-current font-bold text-base">
             <option value="movilidad">Plan 1: Movilidad General</option>
-            <option value="cardio">Plan 2: Quema Calorías en Silla</option>
-            <option value="lumbar">Plan 3: Alivio Espalda y Calma</option>
+            <option value="fuerza">Plan 2: Fuerza y Tono en Silla</option>
+            <option value="cardio">Plan 3: Quema Calorías en Silla</option>
+            <option value="lumbar">Plan 4: Alivio Espalda y Calma</option>
           </select>
         </div>
         <div id="planContent" class="space-y-4"></div>
@@ -203,7 +242,7 @@
 
       <!-- Categorías de ejercicios -->
       <div class="space-y-3">
-        <h2 class="text-xl sm:text-2xl font-extrabold px-1">2. O elige una zona del cuerpo (6 ejercicios cada una)</h2>
+        <h2 class="text-xl sm:text-2xl font-extrabold px-1">2. O elige una zona del cuerpo (10 ejercicios cada una)</h2>
         <div id="categoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
 
@@ -214,51 +253,56 @@
           <h2 id="calendarMonthTitle" class="text-lg sm:text-xl font-extrabold capitalize">Mes</h2>
           <button onclick="changeCalendarMonth(1)" class="px-4 py-2 rounded-xl border-2 border-current font-bold">Siguiente ▶</button>
         </div>
-        <div class="grid grid-cols-7 gap-1 text-center font-bold text-sm opacity-80">
+        <div class="grid grid-cols-7 gap-1 text-center font-bold text-sm opacity-85">
           <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
         </div>
         <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center"></div>
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-current/20 text-sm">
-          <span>⭐ Los días en verde tienen al menos 1 rutina completada.</span>
-          <div class="flex gap-3">
-            <button onclick="openSafetyModal()" class="underline font-bold">Ver consejos de seguridad</button>
-            <button onclick="resetHistory()" class="underline opacity-75">Reiniciar historial</button>
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-current/25 text-sm">
+          <span>⭐ Días en verde = rutina completada.</span>
+          <div class="flex flex-wrap gap-3">
+            <button onclick="exportBackup()" class="underline font-bold">💾 Guardar copia</button>
+            <label class="underline font-bold cursor-pointer">
+              📂 Cargar copia
+              <input type="file" accept=".json" onchange="importBackup(event)" class="hidden" />
+            </label>
+            <button onclick="openSafetyModal()" class="underline font-bold">Seguridad</button>
+            <button onclick="resetHistory()" class="underline opacity-80">Reiniciar</button>
           </div>
         </div>
       </div>
     </section>
 
     <!-- PANTALLA DE EJERCICIO ACTIVO -->
-    <section id="workoutScreen" class="hidden space-y-5">
+    <section id="workoutScreen" class="hidden space-y-5" aria-live="polite">
       <div class="card-box rounded-3xl p-5 space-y-4">
         <div class="flex items-center justify-between gap-2 text-base font-bold">
-          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 6</span>
+          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 10</span>
           <span id="intensityBadge" class="px-3 py-1 rounded-full border border-current">Nivel: Suave</span>
         </div>
 
-        <div id="phaseBanner" class="text-center py-2 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-blue-600 text-white">
-          ¡EN MARCHA!
+        <div id="phaseBanner" class="text-center py-2.5 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-blue-700 text-white">
+          💪 ¡EN MARCHA!
         </div>
 
         <h2 id="exerciseTitle" class="text-2xl sm:text-3xl font-extrabold text-center">Nombre del ejercicio</h2>
 
-        <!-- Ilustración SVG animada en silla -->
+        <!-- Ilustración SVG en silla -->
         <div class="flex justify-center">
-          <div id="svgContainer" class="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl border-2 border-current flex items-center justify-center p-3 bg-sky-50/40"></div>
+          <div id="svgContainer" role="img" aria-label="Ilustración de postura en silla" class="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl border-2 border-current flex items-center justify-center p-3"></div>
         </div>
 
         <!-- Temporizador gigante -->
         <div class="text-center space-y-2">
           <div id="timerDisplay" class="text-5xl sm:text-6xl font-black tracking-tight">00:30</div>
           <div class="w-full h-5 rounded-full border-2 border-current overflow-hidden p-0.5">
-            <div id="progressBar" class="h-full rounded-full bg-blue-600 transition-all duration-300" style="width: 100%"></div>
+            <div id="progressBar" class="h-full rounded-full transition-all duration-300" style="width: 100%; background-color: var(--accent);"></div>
           </div>
         </div>
 
         <!-- Instrucción clara -->
-        <div class="p-4 rounded-2xl border-2 border-current/30 text-center space-y-2">
+        <div class="p-4 rounded-2xl border-2 border-current/35 text-center space-y-2">
           <p id="exerciseDesc" class="text-lg sm:text-xl font-semibold leading-relaxed"></p>
-          <p id="exerciseTip" class="text-sm sm:text-base font-bold opacity-85"></p>
+          <p id="exerciseTip" class="text-sm sm:text-base font-bold opacity-90"></p>
         </div>
 
         <!-- Controles gigantes -->
@@ -274,10 +318,10 @@
     <!-- PANTALLA DE FINALIZACIÓN -->
     <section id="completeScreen" class="hidden space-y-6">
       <div class="card-box rounded-3xl p-6 sm:p-8 text-center space-y-5">
-        <div class="text-6xl">🎉</div>
+        <div class="text-6xl" aria-hidden="true">🎉</div>
         <h2 class="text-3xl sm:text-4xl font-extrabold">¡Rutina Completada!</h2>
-        <p id="completeSummary" class="text-lg sm:text-xl opacity-90"></p>
-        <div id="planCompleteNotice" class="hidden p-4 rounded-2xl border-2 border-green-600 font-bold text-green-700 bg-green-50"></div>
+        <p id="completeSummary" class="text-lg sm:text-xl opacity-95"></p>
+        <div id="planCompleteNotice" class="hidden p-4 rounded-2xl border-2 border-green-600 font-bold text-green-800 bg-green-100"></div>
         <button onclick="goHome()" class="btn-primary w-full rounded-3xl p-5 text-xl sm:text-2xl shadow-lg">
           🏠 Volver al Inicio
         </button>
@@ -287,140 +331,194 @@
   </main>
 
   <script>
-    // Catálogo completo de 54 ejercicios 100% en silla organizados en 9 categorías
+    // Catálogo de 100 ejercicios 100% en silla con instrucciones revisadas de seguridad y respiración
     const CATEGORIES = [
+      {
+        id: "fuerza",
+        name: "Fuerza y Tono en Silla",
+        icon: "🏋️",
+        desc: "10 ejercicios de resistencia segura sin levantarte",
+        exercises: [
+          { name: "Press de pecho con resistencia", desc: "Con la espalda apoyada, empuja ambas manos al frente soltando el aire y vuelve despacio al pecho.", tip: "Seguridad: No aguantes la respiración al empujar; puedes sujetar una botella pequeña.", anim: "pulse", pose: "armsFront" },
+          { name: "Remo con pausa atrás", desc: "Estira brazos al frente y tira de los codos hacia atrás apretando la espalda 3 segundos.", tip: "Seguridad: Mantén los hombros bajos lejos de las orejas.", anim: "pulse", pose: "biceps" },
+          { name: "Empuje en asiento (Tríceps)", desc: "Apoya las manos en los bordes firmes de la silla y presiona hacia abajo estirando los codos.", tip: "Seguridad: No hace falta despegar los glúteos del asiento.", anim: "float", pose: "chairPush" },
+          { name: "Extensión de pierna con pausa", desc: "Estira la pierna derecha al frente, apunta los dedos del pie hacia ti y aguanta 3 segundos; cambia.", tip: "Seguridad: No bloquees la rodilla con brusquedad al subir.", anim: "pulse", pose: "legExt" },
+          { name: "Apretón firme de muslos", desc: "Coloca un cojín doblado o tus puños entre las rodillas y presiona hacia adentro 4 segundos.", tip: "Seguridad: Suelta el aire despacio mientras aprietas.", anim: "pulse", pose: "march" },
+          { name: "Elevación lateral sostenida", desc: "Sube los brazos a los lados hasta la altura de los hombros, sostén 2 segundos y baja lento.", tip: "Seguridad: Si hay molestia en hombros, sube solo hasta la cintura.", anim: "float", pose: "armsWide" },
+          { name: "Curl de bíceps con bajada lenta", desc: "Dobla los codos llevando manos a los hombros y baja contando despacio hasta 4.", tip: "Seguridad: Mantén los codos pegados a los costados.", anim: "float", pose: "biceps" },
+          { name: "Empuje de talones contra el suelo", desc: "Con los pies apoyados, presiona firme los talones contra el suelo durante 4 segundos y relaja.", tip: "Seguridad: Activa piernas y glúteos sin mover las rodillas.", anim: "pulse", pose: "feet" },
+          { name: "Apertura con resistencia imaginaria", desc: "Con los codos doblados pegados al cuerpo, abre las manos hacia afuera apretando la espalda.", tip: "Seguridad: Fortalece los hombros con recorrido corto y seguro.", anim: "pulse", pose: "armsWide" },
+          { name: "Plancha abdominal sentado", desc: "Apoya las manos en los muslos, alarga la espalda y contrae suavemente el abdomen 5 segundos.", tip: "Seguridad: Sigue respirando corto y suave sin contener el aire.", anim: "pulse", pose: "core" }
+        ]
+      },
       {
         id: "cuello",
         name: "Cuello y Hombros",
         icon: "🧣",
-        desc: "Alivia rigidez cervical y descarga tensión",
+        desc: "10 ejercicios suaves para aliviar tensión cervical",
         exercises: [
-          { name: "Giro suave de cuello", desc: "Mira despacio hacia la derecha, vuelve al centro y mira hacia la izquierda.", tip: "Mantén los hombros relajados y bajos.", anim: "sway", pose: "neck" },
-          { name: "Inclinación de oreja al hombro", desc: "Acerca suavemente la oreja derecha hacia el hombro derecho y cambia de lado.", tip: "No subas el hombro hacia la oreja.", anim: "sway", pose: "neck" },
-          { name: "Círculos de hombros atrás", desc: "Sube ambos hombros hacia las orejas y llévalos hacia atrás dibujando círculos.", tip: "Respira profundo al abrir el pecho.", anim: "float", pose: "shoulders" },
-          { name: "Encogimiento y suelta", desc: "Sube los hombros 3 segundos cogiendo aire y déjalos caer de golpe al soltar.", tip: "Ideal para soltar tensión acumulada.", anim: "float", pose: "shoulders" },
-          { name: "Mirada arriba y abajo", desc: "Lleva la barbilla suavemente hacia el pecho y luego mira un poco hacia el techo.", tip: "Haz el movimiento muy lento sin forzar atrás.", anim: "float", pose: "neck" },
-          { name: "Dibujar infinito con la nariz", desc: "Dibuja un ocho tumbado muy pequeño en el aire con la punta de la nariz.", tip: "Suaviza las articulaciones del cuello.", anim: "pulse", pose: "neck" }
+          { name: "Giro suave de cuello", desc: "Mira despacio hacia la derecha, pasa por el centro y mira hacia la izquierda.", tip: "Seguridad: Movimiento lento, sin llegar nunca al límite de dolor.", anim: "sway", pose: "neck" },
+          { name: "Inclinación de oreja al hombro", desc: "Acerca suavemente la oreja derecha al hombro derecho 2 segundos y cambia al lado izquierdo.", tip: "Seguridad: Deja ambos hombros relajados hacia abajo.", anim: "sway", pose: "neck" },
+          { name: "Círculos de hombros atrás", desc: "Sube ambos hombros y llévalos hacia atrás dibujando círculos amplios y lentos.", tip: "Respiración: Inspira al subir los hombros y suelta al bajarlos.", anim: "float", pose: "shoulders" },
+          { name: "Encogimiento y suelta", desc: "Sube los hombros 3 segundos cogiendo aire y déjalos caer suavemente al exhalar.", tip: "Ideal para liberar tensión acumulada en trapecios.", anim: "float", pose: "shoulders" },
+          { name: "Mirada abajo y al frente", desc: "Lleva la barbilla hacia el pecho estirando la nuca y vuelve despacio a mirar al frente.", tip: "Seguridad: Evita echar la cabeza hacia atrás si tienes mareos o artrosis cervical.", anim: "float", pose: "neck" },
+          { name: "Dibujar infinito con la nariz", desc: "Dibuja un ocho tumbado muy pequeño en el aire con la punta de la nariz.", tip: "Suaviza las articulaciones superiores del cuello.", anim: "pulse", pose: "neck" },
+          { name: "Círculos de hombros adelante", desc: "Gira suavemente ambos hombros hacia adelante para soltar la parte alta de la espalda.", tip: "Haz círculos cómodos sin encorvar demasiado.", anim: "float", pose: "shoulders" },
+          { name: "Semicírculo frontal de cuello", desc: "Con la barbilla cerca del pecho, deslízala despacio hacia un hombro y luego al otro.", tip: "Seguridad: Mantén el recorrido solo por delante.", anim: "sway", pose: "neck" },
+          { name: "Hombros alternos arriba y abajo", desc: "Sube el hombro derecho mientras bajas el izquierdo, y alterna despacio.", tip: "Acompaña con respiración tranquila.", anim: "sway", pose: "shoulders" },
+          { name: "Retracción suave de barbilla", desc: "Lleva la cabeza ligeramente hacia atrás alineando orejas con hombros y relaja.", tip: "Corrige la postura adelantada al leer o usar el móvil.", anim: "pulse", pose: "neck" }
         ]
       },
       {
         id: "brazos",
-        name: "Brazos y Fuerza Suave",
+        name: "Brazos y Movilidad Superior",
         icon: "💪",
-        desc: "Tonifica brazos y pecho sin pesas",
+        desc: "10 ejercicios para mover brazos y abrir el pecho",
         exercises: [
-          { name: "Elevación frontal de brazos", desc: "Sube ambos brazos estirados al frente hasta la altura de los hombros y baja despacio.", tip: "Mantén la espalda apoyada en el respaldo.", anim: "float", pose: "armsUp" },
-          { name: "Empuje suave al frente", desc: "Con las manos a la altura del pecho, empuja hacia adelante como abriendo una puerta.", tip: "Suelta el aire al empujar.", anim: "pulse", pose: "armsFront" },
-          { name: "Apertura de brazos en cruz", desc: "Abre los brazos hacia los lados como un abrazo grande y vuelve a juntar las manos.", tip: "Junta suavemente los omóplatos atrás.", anim: "pulse", pose: "armsWide" },
-          { name: "Flexión de bíceps sentado", desc: "Con los codos pegados al cuerpo, lleva las manos hacia los hombros y baja despacio.", tip: "Puedes sujetar dos botellitas de agua pequeñas.", anim: "float", pose: "biceps" },
-          { name: "Press hacia el techo", desc: "Desde los hombros, empuja ambas manos hacia arriba y vuelve a bajar con control.", tip: "Si molesta un hombro, súbelo solo hasta donde sea cómodo.", anim: "float", pose: "armsUp" },
-          { name: "Apretón de palmas al pecho", desc: "Junta las palmas frente al pecho y presiona una contra otra durante 4 segundos.", tip: "Activa pecho y brazos sin mover articulaciones.", anim: "pulse", pose: "prayer" }
+          { name: "Elevación frontal de brazos", desc: "Sube ambos brazos al frente hasta la altura de los hombros y baja despacio.", tip: "Seguridad: Mantén la espalda apoyada para no arquear la zona lumbar.", anim: "float", pose: "armsUp" },
+          { name: "Empuje suave al frente", desc: "Con las manos a la altura del pecho, empuja adelante soltando el aire y vuelve.", tip: "Movimiento fluido sin bloquear los codos.", anim: "pulse", pose: "armsFront" },
+          { name: "Apertura de brazos en cruz", desc: "Abre los brazos a los lados como un abrazo grande inspirando y junta palmas al soltar.", tip: "Abre el pecho y mejora la capacidad respiratoria.", anim: "pulse", pose: "armsWide" },
+          { name: "Flexión de bíceps sentado", desc: "Con los codos pegados al tronco, lleva las manos hacia los hombros y baja con control.", tip: "Puedes hacerlo sin peso o con dos botellas pequeñas.", anim: "float", pose: "biceps" },
+          { name: "Elevación alterna hacia arriba", desc: "Sube primero el brazo derecho hacia el techo hasta donde sea cómodo y luego el izquierdo.", tip: "Seguridad: Si un hombro duele, súbelo solo hasta la altura de la cara.", anim: "sway", pose: "armsUp" },
+          { name: "Apretón de palmas al pecho", desc: "Junta las palmas frente al pecho y presiona una contra otra 4 segundos soltando aire.", tip: "Activa pecho y brazos sin mover articulaciones.", anim: "pulse", pose: "prayer" },
+          { name: "Círculos pequeños con brazos", desc: "Con los brazos ligeramente abiertos a los lados, dibuja círculos pequeños y suaves.", tip: "Si notas cansancio, baja un poco los brazos.", anim: "pulse", pose: "armsWide" },
+          { name: "Aleteo suave de codos", desc: "Apoya los dedos sobre los hombros y sube y baja los codos suavemente como alas.", tip: "Muy seguro para mejorar movilidad sin sobrecargar.", anim: "float", pose: "shoulders" },
+          { name: "Empuje hacia el suelo", desc: "Con las palmas mirando hacia abajo, presiona el aire hacia el suelo a ambos lados.", tip: "Estira el cuello mientras activas los brazos.", anim: "float", pose: "chairPush" },
+          { name: "Cruce suave de brazos", desc: "Cruza los brazos por delante del pecho dándote un abrazo y ábrelos de nuevo.", tip: "Alterna qué brazo pasa por encima en cada repetición.", anim: "pulse", pose: "armsWide" }
         ]
       },
       {
         id: "manos",
         name: "Manos, Muñecas y Dedos",
         icon: "🖐️",
-        desc: "Mejora agilidad y alivia rigidez en manos",
+        desc: "10 ejercicios para agilidad y alivio articular",
         exercises: [
-          { name: "Abrir y cerrar puños", desc: "Cierra las manos formando un puño suave y ábrelas estirando bien todos los dedos.", tip: "Activa la circulación de manos y antebrazos.", anim: "pulse", pose: "hands" },
-          { name: "Pinza dedo a dedo", desc: "Toca la punta del pulgar con el índice, luego corazón, anular y meñique.", tip: "Hazlo con ambas manos a la vez.", anim: "pulse", pose: "hands" },
-          { name: "Círculos suaves de muñecas", desc: "Con los codos cómodos, gira ambas muñecas en círculos hacia afuera y hacia adentro.", tip: "Movimiento lento y continuo.", anim: "sway", pose: "hands" },
-          { name: "Piano en el aire", desc: "Mueve todos los dedos rápidamente como si tocaras el piano sobre tus muslos.", tip: "Excelente para mantener la destreza fina.", anim: "cardio", pose: "hands" },
-          { name: "Estiramiento de palma", desc: "Estira un brazo al frente con la palma mirando hacia afuera y ayuda suave con la otra mano.", tip: "Sin dolor, solo sensación agradable de estiramiento.", anim: "float", pose: "armsFront" },
-          { name: "Separar y juntar dedos", desc: "Abre los dedos en abanico todo lo que puedas y vuélvelos a juntar.", tip: "Mantén 2 segundos abiertos en cada repetición.", anim: "pulse", pose: "hands" }
+          { name: "Abrir y cerrar puños", desc: "Cierra las manos formando un puño suave y ábrelas estirando bien todos los dedos.", tip: "Activa el retorno venoso de manos y antebrazos.", anim: "pulse", pose: "hands" },
+          { name: "Pinza dedo a dedo", desc: "Toca la punta del pulgar con índice, corazón, anular y meñique en ambas manos.", tip: "Trabaja la precisión y coordinación fina.", anim: "pulse", pose: "hands" },
+          { name: "Círculos suaves de muñecas", desc: "Con los antebrazos cómodos, gira ambas muñecas en círculos hacia afuera y adentro.", tip: "Movimiento lento, amplio y sin chasquidos bruscos.", anim: "sway", pose: "hands" },
+          { name: "Piano en el aire", desc: "Mueve todos los dedos de forma alterna como tocando el piano sobre tus muslos.", tip: "Mantiene la agilidad de los tendones de la mano.", anim: "cardio", pose: "hands" },
+          { name: "Estiramiento suave de palma", desc: "Estira un brazo al frente con palma hacia afuera y ayuda suave en los dedos con la otra mano.", tip: "Seguridad: Estira sin tirar con fuerza ni provocar dolor.", anim: "float", pose: "armsFront" },
+          { name: "Separar y juntar dedos", desc: "Abre los dedos en abanico 2 segundos y vuélvelos a juntar.", tip: "Fortalece la musculatura pequeña de la mano.", anim: "pulse", pose: "hands" },
+          { name: "Saludo de muñecas", desc: "Apoya los antebrazos en los muslos y sube y baja las manos moviendo solo la muñeca.", tip: "Alivia la rigidez matinal en muñecas.", anim: "float", pose: "hands" },
+          { name: "Palmas arriba y abajo", desc: "Con los codos doblados, gira las palmas mirando al techo y luego mirando al suelo.", tip: "Moviliza el antebrazo con suavidad.", anim: "sway", pose: "hands" },
+          { name: "Garra suave de dedos", desc: "Dobla solo las articulaciones medias de los dedos formando una garra y estira.", tip: "Excelente para rigidez por artrosis leve.", anim: "pulse", pose: "hands" },
+          { name: "Círculos con los pulgares", desc: "Cierra suavemente los cuatro dedos y gira ambos pulgares en círculos amplios.", tip: "Alivia tensión en la base del pulgar.", anim: "sway", pose: "hands" }
         ]
       },
       {
         id: "tronco",
         name: "Tronco y Espalda",
         icon: "🧍",
-        desc: "Fortalece abdomen y postura sentado",
+        desc: "10 ejercicios para postura y estabilidad sentado",
         exercises: [
-          { name: "Giro suave de cintura", desc: "Cruza los brazos sobre el pecho y gira el tronco despacio a derecha e izquierda.", tip: "Mantén las caderas fijas en el asiento.", anim: "sway", pose: "twist" },
-          { name: "Inclinación lateral sentado", desc: "Deja caer un brazo hacia el suelo por el lateral de la silla y vuelve al centro.", tip: "Alarga el costado sin levantar el glúteo contrario.", anim: "sway", pose: "sideBend" },
-          { name: "Remo con espalda recta", desc: "Estira los brazos al frente y tira de los codos hacia atrás sacando pecho.", tip: "Imagina que quieres juntar los codos por detrás.", anim: "pulse", pose: "armsFront" },
-          { name: "Activación de abdomen", desc: "Suelta el aire metiendo suavemente el ombligo hacia adentro 4 segundos y relaja.", tip: "Fortalece la faja abdominal de forma segura.", anim: "pulse", pose: "core" },
-          { name: "Círculos con el tronco", desc: "Con las manos en los muslos, dibuja círculos suaves con el pecho sentado.", tip: "Lubrica toda la columna lumbar.", anim: "sway", pose: "twist" },
-          { name: "Crecer hacia el techo", desc: "Imagina que un hilo tira de tu coronilla hacia arriba alargando toda la espalda.", tip: "Mantén la postura erguida 5 segundos y descansa.", anim: "float", pose: "core" }
+          { name: "Giro suave de cintura", desc: "Cruza los brazos sobre el pecho y gira despacio hacia la derecha y hacia la izquierda.", tip: "Seguridad: Mantén ambas caderas apoyadas en el asiento.", anim: "sway", pose: "twist" },
+          { name: "Inclinación lateral sentado", desc: "Deja caer la mano derecha hacia el suelo por el lado de la silla y vuelve al centro; cambia.", tip: "Seguridad: No inclines tanto como para perder estabilidad.", anim: "sway", pose: "sideBend" },
+          { name: "Remo con espalda recta", desc: "Estira brazos adelante y tira de los codos hacia atrás juntando omóplatos.", tip: "Mejora la postura erguida.", anim: "pulse", pose: "armsFront" },
+          { name: "Activación suave de abdomen", desc: "Suelta el aire metiendo el ombligo suavemente hacia adentro 4 segundos y relaja.", tip: "Protege la zona lumbar desde dentro.", anim: "pulse", pose: "core" },
+          { name: "Círculos suaves con el pecho", desc: "Con las manos apoyadas en los muslos, dibuja círculos pequeños con el tronco.", tip: "Lubrica la columna dorsal y lumbar.", anim: "sway", pose: "twist" },
+          { name: "Crecer hacia el techo", desc: "Alarga la columna como si un hilo tirara suavemente de tu cabeza hacia arriba 4 segundos.", tip: "Respira tranquilo manteniendo la altura.", anim: "float", pose: "core" },
+          { name: "Inclinación adelante con espalda recta", desc: "Con manos en muslos y espalda recta, inclínate un poco adelante y vuelve al respaldo.", tip: "Seguridad: Mantén la mirada al frente, sin redondear la espalda.", anim: "float", pose: "core" },
+          { name: "Giro con apoyo en muslo", desc: "Apoya la mano derecha en el muslo izquierdo y gira suavemente el pecho a la izquierda; cambia.", tip: "Haz el giro acompañando con una exhalación lenta.", anim: "sway", pose: "twist" },
+          { name: "Basculación pélvica sentado", desc: "Redondea suavemente la zona lumbar apoyándola atrás y vuelve a enderezar la pelvis.", tip: "Desbloquea la parte baja de la espalda.", anim: "pulse", pose: "core" },
+          { name: "Alcance diagonal al frente", desc: "Estira el brazo derecho en diagonal hacia adelante y vuelve; alterna con el izquierdo.", tip: "Activa los músculos laterales del tronco.", anim: "sway", pose: "armsFront" }
         ]
       },
       {
         id: "piernas",
         name: "Piernas y Pies",
         icon: "🦵",
-        desc: "Activa circulación y fuerza en piernas",
+        desc: "10 ejercicios para circulación y fuerza en piernas",
         exercises: [
-          { name: "Marcha suave sentado", desc: "Levanta alternativamente una rodilla y luego la otra como si caminaras sentado.", tip: "Apoya bien todo el pie al bajar.", anim: "float", pose: "march" },
-          { name: "Extensión de una pierna", desc: "Estira la pierna derecha hacia adelante aguantando 2 segundos y baja despacio.", tip: "Alterna derecha e izquierda en cada repetición.", anim: "pulse", pose: "legExt" },
-          { name: "Elevación de talones", desc: "Con las puntas apoyadas en el suelo, sube ambos talones todo lo que puedas.", tip: "Bombea la sangre de los gemelos.", anim: "float", pose: "feet" },
-          { name: "Puntas arriba y abajo", desc: "Apoya los talones en el suelo y levanta las puntas de los pies hacia ti.", tip: "Muy útil para prevenir hinchazón de tobillos.", anim: "float", pose: "feet" },
-          { name: "Separar y juntar rodillas", desc: "Con los pies apoyados, abre las rodillas hacia afuera y vuélvelas a juntar.", tip: "Fortalece caderas y muslos.", anim: "pulse", pose: "march" },
-          { name: "Círculos de tobillo", desc: "Levanta un poco un pie del suelo y gira el tobillo en círculos; luego cambia de pie.", tip: "Mejora la movilidad del tobillo.", anim: "sway", pose: "feet" }
+          { name: "Marcha suave sentado", desc: "Levanta alternativamente la rodilla derecha y la izquierda como caminando sentado.", tip: "Apoya todo el pie en el suelo en cada paso.", anim: "float", pose: "march" },
+          { name: "Extensión alterna de pierna", desc: "Estira la pierna derecha al frente 2 segundos, baja despacio y repite con la izquierda.", tip: "Fortalece los muslos para levantarse con más facilidad.", anim: "pulse", pose: "legExt" },
+          { name: "Elevación de talones", desc: "Con las puntas apoyadas en el suelo, sube ambos talones arriba y bájalos despacio.", tip: "Activa el bombeo sanguíneo de los gemelos.", anim: "float", pose: "feet" },
+          { name: "Puntas de pies arriba", desc: "Apoya los talones en el suelo y levanta las puntas de los pies hacia tus espinillas.", tip: "Previene la pesadez de piernas y tobillos.", anim: "float", pose: "feet" },
+          { name: "Separar y juntar rodillas", desc: "Con los pies apoyados, abre las rodillas hacia afuera y vuélvelas a juntar despacio.", tip: "Fortalece caderas y muslos.", anim: "pulse", pose: "march" },
+          { name: "Círculos de tobillo", desc: "Eleva un poco el pie derecho, gira el tobillo en círculos y cambia al pie izquierdo.", tip: "Mantiene flexible la articulación del tobillo.", anim: "sway", pose: "feet" },
+          { name: "Balanceo punta-talón", desc: "Sube talones apoyando puntas y luego apoya talones subiendo puntas de forma continua.", tip: "Excelente para activar la circulación en reposo.", anim: "float", pose: "feet" },
+          { name: "Paso lateral sentado", desc: "Abre el pie derecho hacia un lado tocando el suelo y vuelve al centro; cambia al izquierdo.", tip: "Mejora la movilidad lateral de la cadera.", anim: "sway", pose: "march" },
+          { name: "Escribir vocales con el pie", desc: "Levanta ligeramente un pie y dibuja las vocales en el aire con la punta.", tip: "Trabaja todos los ángulos del tobillo.", anim: "sway", pose: "feet" },
+          { name: "Deslizamiento de talón", desc: "Desliza el talón derecho hacia adelante por el suelo hasta estirar la pierna y recógelo.", tip: "Alternativa muy suave si cuesta elevar la pierna.", anim: "pulse", pose: "legExt" }
         ]
       },
       {
         id: "cardio",
         name: "Cardio Suave (Quema Calorías)",
         icon: "🔥",
-        desc: "Activa el corazón y ayuda a perder peso sentado",
+        desc: "10 ejercicios rítmicos para activar el corazón sentado",
         exercises: [
-          { name: "Marcha rápida con braceo", desc: "Mueve piernas y brazos a buen ritmo como si caminaras rápido sin levantarte.", tip: "Nota cardio: Mantén un ritmo alegre donde aún puedas hablar.", anim: "cardio", pose: "march" },
-          { name: "Golpes alternos al frente", desc: "Lanza los puños hacia adelante de forma alterna y dinámica con el abdomen firme.", tip: "Nota cardio: Gira ligeramente los hombros con cada golpe.", anim: "cardio", pose: "armsFront" },
-          { name: "Tijeras sentado", desc: "Abre brazos arriba y separa los pies a la vez; vuelve al centro de forma rítmica.", tip: "Nota cardio: Si cansa subir mucho los brazos, ábrelos a media altura.", anim: "cardio", pose: "armsWide" },
-          { name: "Toques de talón con empuje", desc: "Toca el suelo adelante con un talón mientras empujas ambas manos al frente.", tip: "Nota cardio: Alterna pierna derecha e izquierda sin parar.", anim: "cardio", pose: "legExt" },
-          { name: "Remo rápido en silla", desc: "Lleva brazos adelante y tira rápido hacia atrás mientras mueves los pies.", tip: "Nota cardio: Excelente ejercicio global para quemar energía.", anim: "cardio", pose: "armsFront" },
-          { name: "Rodillas arriba con palmada", desc: "Sube una rodilla y da una palmada suave por debajo o sobre el muslo alternando.", tip: "Nota cardio: Mantén la espalda recta, no te encorves hacia el pie.", anim: "cardio", pose: "march" }
+          { name: "Marcha rápida con braceo", desc: "Mueve piernas y brazos a buen ritmo como caminando rápido sin levantarte de la silla.", tip: "Seguridad cardio: Mantén un ritmo donde puedas hablar sin ahogarte.", anim: "cardio", pose: "march" },
+          { name: "Golpes alternos al frente", desc: "Lanza los puños hacia adelante alternando derecho e izquierdo con energía controlada.", tip: "Gira ligeramente los hombros con cada golpe.", anim: "cardio", pose: "armsFront" },
+          { name: "Tijeras sentado", desc: "Abre los brazos y separa los pies hacia los lados a la vez; vuelve al centro al ritmo.", tip: "Si cansa subir mucho los brazos, ábrelos a la altura del pecho.", anim: "cardio", pose: "armsWide" },
+          { name: "Toques de talón con empuje", desc: "Toca el suelo adelante con un talón mientras empujas ambas manos al frente; alterna.", tip: "Mueve todo el cuerpo de forma coordinada y sin impacto.", anim: "cardio", pose: "legExt" },
+          { name: "Remo rápido en silla", desc: "Lleva brazos adelante y tira rápido hacia atrás mientras alternas los pasos en el sitio.", tip: "Gran ejercicio global para activar el metabolismo.", anim: "cardio", pose: "armsFront" },
+          { name: "Rodillas arriba con palmada", desc: "Sube una rodilla y da una palmada suave sobre o debajo del muslo alternando piernas.", tip: "Seguridad: Lleva la rodilla hacia las manos, no encorves la espalda.", anim: "cardio", pose: "march" },
+          { name: "Golpes suaves hacia arriba", desc: "Lanza un puño hacia arriba y luego el otro de forma continua y ligera.", tip: "Eleva suavemente las pulsaciones.", anim: "cardio", pose: "armsUp" },
+          { name: "Patadas alternas dinámicas", desc: "Estira una pierna y luego la otra al frente de forma fluida acompañando con los brazos.", tip: "No des golpes bruscos con la rodilla al estirar.", anim: "cardio", pose: "legExt" },
+          { name: "Paso en V sentado", desc: "Abre un pie adelante-afuera, luego el otro, y vuélvelos a juntar en el centro.", tip: "Acompaña con una palmada al abrir los pies.", anim: "cardio", pose: "march" },
+          { name: "Braceo de carrera sentado", desc: "Con los codos doblados, mueve los brazos rápido adelante y atrás como corriendo.", tip: "Puedes acompañar moviendo rápido las puntas de los pies.", anim: "cardio", pose: "biceps" }
         ]
       },
       {
         id: "coordinacion",
         name: "Coordinación y Agilidad",
         icon: "🧠",
-        desc: "Conecta mente y cuerpo con movimientos cruzados",
+        desc: "10 ejercicios para conectar mente y cuerpo",
         exercises: [
-          { name: "Mano a rodilla contraria", desc: "Toca la rodilla izquierda con la mano derecha y luego cambia al otro lado.", tip: "Estimula ambos hemisferios del cerebro.", anim: "sway", pose: "twist" },
-          { name: "Brazo y pierna contrarios", desc: "Sube el brazo derecho mientras estiras la pierna izquierda al frente.", tip: "Hazlo despacio buscando equilibrio y control.", anim: "pulse", pose: "legExt" },
-          { name: "Secuencia hombros-cabeza-rodillas", desc: "Toca con ambas manos tus hombros, luego la cabeza y luego las rodillas.", tip: "Mantén un ritmo constante y cómodo.", anim: "float", pose: "biceps" },
-          { name: "Natación estilo crol sentado", desc: "Mueve los brazos alternativamente hacia adelante como si nadaras sentado.", tip: "Acompaña con respiraciones fluidas.", anim: "sway", pose: "armsUp" },
-          { name: "Dibujar círculos opuestos", desc: "Mueve una mano hacia adelante y la otra en pequeños círculos sobre el muslo.", tip: "No pasa nada si cuesta al principio, ¡es entrenamiento mental!", anim: "pulse", pose: "hands" },
-          { name: "Palma abierta y puño", desc: "Pon una mano abierta y la otra cerrada en puño, y cambia ambas a la vez.", tip: "Empieza despacio y acelera poco a poco.", anim: "pulse", pose: "hands" }
+          { name: "Mano a rodilla contraria", desc: "Toca la rodilla izquierda con la mano derecha, vuelve y toca la derecha con la izquierda.", tip: "Estimula la atención y la coordinación cruzada.", anim: "sway", pose: "twist" },
+          { name: "Brazo y pierna contrarios", desc: "Sube el brazo derecho al frente mientras estiras la pierna izquierda; alterna.", tip: "Hazlo despacio buscando equilibrio y control.", anim: "pulse", pose: "legExt" },
+          { name: "Secuencia hombros-cabeza-rodillas", desc: "Toca tus hombros, luego suavemente la cabeza y luego las rodillas en orden.", tip: "Mantén un ritmo constante y cómodo.", anim: "float", pose: "biceps" },
+          { name: "Natación estilo crol sentado", desc: "Mueve los brazos alternativamente hacia adelante como nadando crol.", tip: "Acompaña con respiraciones profundas y fluidas.", anim: "sway", pose: "armsUp" },
+          { name: "Círculos opuestos con manos", desc: "Dibuja pequeños círculos hacia afuera con ambas manos sobre los muslos a la vez.", tip: "Entrena la concentración sin esfuerzo físico intenso.", anim: "pulse", pose: "hands" },
+          { name: "Palma abierta y puño alternos", desc: "Pon una mano abierta y la otra cerrada en puño, y cambia ambas a la vez.", tip: "Empieza despacio y aumenta ritmo poco a poco.", anim: "pulse", pose: "hands" },
+          { name: "Nariz y oreja alternando", desc: "Toca la punta de tu nariz con una mano y la oreja contraria con la otra; cambia.", tip: "Ejercicio divertido de agilidad mental.", anim: "sway", pose: "biceps" },
+          { name: "Nado estilo espalda sentado", desc: "Gira un brazo hacia atrás y luego el otro como nadando de espaldas.", tip: "Abre el pecho y mejora la movilidad de hombros.", anim: "sway", pose: "armsUp" },
+          { name: "Ritmo de muslos y palmas", desc: "Da dos toques suaves en tus muslos, una palmada y abre los brazos a los lados.", tip: "Sigue un ritmo tranquilo y constante.", anim: "pulse", pose: "prayer" },
+          { name: "Talón derecho y brazo izquierdo", desc: "Toca adelante con el talón derecho mientras elevas el brazo izquierdo; cambia.", tip: "Mantén la espalda erguida y apoyada.", anim: "pulse", pose: "legExt" }
         ]
       },
       {
         id: "estiramientos",
         name: "Estiramientos y Alivio Lumbar",
         icon: "🌿",
-        desc: "Descarga espalda baja, caderas y piernas",
+        desc: "10 estiramientos suaves para espalda y piernas",
         exercises: [
-          { name: "Gato-Vaca sentado", desc: "Con manos en rodillas, arquea suavemente la espalda mirando arriba y luego redondea mirando el ombligo.", tip: "Alivia la rigidez lumbar al instante.", anim: "sway", pose: "core" },
-          { name: "Abrazo de rodilla al pecho", desc: "Sujeta una rodilla con ambas manos y acércala suavemente hacia tu pecho.", tip: "Mantén unos segundos y cambia de pierna.", anim: "float", pose: "march" },
-          { name: "Estiramiento de pierna y punta", desc: "Estira una pierna apoyando el talón en el suelo e inclina un poco el tronco recto.", tip: "Notarás un estiramiento suave detrás del muslo.", anim: "pulse", pose: "legExt" },
-          { name: "Estiramiento lateral largo", desc: "Sube un brazo por encima de la cabeza e inclínate suavemente hacia el lado contrario.", tip: "Sujétate al borde de la silla con la otra mano.", anim: "sway", pose: "sideBend" },
-          { name: "Apertura de pecho en respaldo", desc: "Lleva las manos atrás sujetando el respaldo de la silla y abre el pecho.", tip: "Contrarresta la postura encorvada.", anim: "float", pose: "armsWide" },
-          { name: "Flexión relajada adelante", desc: "Separa un poco las rodillas y deja caer suavemente las manos hacia tus espinillas.", tip: "Sube muy despacio vértebra a vértebra al terminar.", anim: "float", pose: "core" }
+          { name: "Gato-Vaca sentado", desc: "Con manos en rodillas, saca pecho mirando al frente y luego redondea suavemente la espalda.", tip: "Alivia la rigidez de toda la columna.", anim: "sway", pose: "core" },
+          { name: "Abrazo de rodilla al pecho", desc: "Sujeta la rodilla derecha con ambas manos y acércala suave al pecho 4 segundos; cambia.", tip: "Estira suavemente la zona lumbar y el glúteo.", anim: "float", pose: "march" },
+          { name: "Estiramiento posterior de pierna", desc: "Estira una pierna apoyando el talón en el suelo e inclina un poco el pecho recto.", tip: "Seguridad: No empujes directamente sobre la rótula.", anim: "pulse", pose: "legExt" },
+          { name: "Estiramiento lateral largo", desc: "Sube el brazo derecho arriba e inclínate suavemente a la izquierda; cambia de lado.", tip: "Sujétate al borde de la silla con la otra mano.", anim: "sway", pose: "sideBend" },
+          { name: "Apertura de pecho en respaldo", desc: "Lleva las manos atrás sujetando el respaldo de la silla y abre suavemente el pecho.", tip: "Contrarresta la postura encorvada.", anim: "float", pose: "armsWide" },
+          { name: "Flexión suave hacia adelante", desc: "Separa las rodillas y desliza las manos hacia las espinillas soltando el aire.", tip: "Seguridad: Sube muy despacio mirando al frente para no marearte.", anim: "float", pose: "core" },
+          { name: "Estiramiento de tríceps suave", desc: "Lleva la mano derecha hacia el hombro derecho y empuja suave el codo hacia arriba; cambia.", tip: "Estira la parte posterior del brazo sin forzar.", anim: "float", pose: "biceps" },
+          { name: "Cruce suave de tobillo", desc: "Cruza un tobillo sobre el otro abajo (o sobre la rodilla si es cómodo) y mantén.", tip: "Relaja la musculatura profunda de la cadera.", anim: "pulse", pose: "march" },
+          { name: "Estiramiento lateral de cuello", desc: "Inclina la cabeza a un lado y apoya suavemente la mano encima sin tirar.", tip: "El propio peso de la mano es suficiente.", anim: "sway", pose: "neck" },
+          { name: "Estiramiento de espalda alta", desc: "Entrelaza los dedos y empuja las palmas hacia adelante redondeando un poco los hombros.", tip: "Separa los omóplatos y alivia tensión dorsal.", anim: "pulse", pose: "armsFront" }
         ]
       },
       {
         id: "calma",
         name: "Respiración y Calma",
         icon: "🕊️",
-        desc: "Relaja el sistema nervioso y recupera energía",
+        desc: "10 ejercicios de relajación y vuelta a la calma",
         exercises: [
-          { name: "Respiración abdominal profunda", desc: "Pon las manos en el abdomen, toma aire inflando la tripa y suéltalo despacio.", tip: "Suelta el aire más lento de lo que lo coges.", anim: "float", pose: "core" },
-          { name: "Abrir brazos al inhalar", desc: "Sube los brazos por los lados tomando aire y bájalos soltando todo el cansancio.", tip: "Sincroniza el movimiento con tu respiración.", anim: "float", pose: "armsWide" },
-          { name: "Respiración en 4 tiempos", desc: "Inspira contando 4, mantén 2 segundos y suelta el aire contando 4.", tip: "Calma las pulsaciones tras el ejercicio.", anim: "pulse", pose: "prayer" },
-          { name: "Automasaje suave en muslos", desc: "Frota suavemente tus muslos desde la cadera hasta las rodillas con ambas manos.", tip: "Favorece el descanso muscular.", anim: "sway", pose: "hands" },
-          { name: "Relajación de mandíbula y frente", desc: "Cierra suavemente los ojos, relaja el entrecejo y deja los hombros pesados.", tip: "Respira tranquilo sintiendo el apoyo de la silla.", anim: "float", pose: "neck" },
-          { name: "Abrazo de gratitud", desc: "Rodéate con tus propios brazos, respira hondo y felicítate por haberte cuidado hoy.", tip: "Cada minuto de movimiento suma salud.", anim: "pulse", pose: "prayer" }
+          { name: "Respiración abdominal profunda", desc: "Pon las manos en el abdomen, inspira inflando la tripa y suelta el aire muy despacio.", tip: "Activa la respuesta natural de relajación del cuerpo.", anim: "float", pose: "core" },
+          { name: "Abrir brazos al inspirar", desc: "Sube los brazos por los lados tomando aire por la nariz y bájalos soltando por la boca.", tip: "Sincroniza cada movimiento con tu respiración.", anim: "float", pose: "armsWide" },
+          { name: "Respiración cuadrada suave", desc: "Inspira contando 3, mantén 1 segundo, suelta contando 4 y descansa 1 segundo.", tip: "Calma el ritmo cardíaco tras el ejercicio.", anim: "pulse", pose: "prayer" },
+          { name: "Automasaje suave en muslos", desc: "Frota suavemente tus muslos desde la cadera hasta las rodillas con ambas manos.", tip: "Favorece la relajación muscular.", anim: "sway", pose: "hands" },
+          { name: "Relajación de cara y hombros", desc: "Cierra suavemente los ojos, relaja la mandíbula y deja caer los hombros pesados.", tip: "Siente el apoyo firme y seguro de la silla.", anim: "float", pose: "neck" },
+          { name: "Abrazo de gratitud", desc: "Rodéate con tus brazos, respira hondo y felicítate por haber dedicado este tiempo a ti.", tip: "La constancia diaria es lo que más cuenta.", anim: "pulse", pose: "prayer" },
+          { name: "Suspiro largo de alivio", desc: "Toma aire profundo por la nariz y suéltalo con un suspiro largo y relajado.", tip: "Libera tensión acumulada en el pecho.", anim: "float", pose: "core" },
+          { name: "Manos al corazón y abdomen", desc: "Coloca una mano en el pecho y otra en el abdomen sintiendo el vaivén de tu respiración.", tip: "Conecta con tu cuerpo en calma.", anim: "pulse", pose: "core" },
+          { name: "Escaneo corporal sentado", desc: "Relaja primero los pies, luego piernas, manos, hombros y finalmente el rostro.", tip: "Disfruta de unos segundos de quietud.", anim: "float", pose: "neck" },
+          { name: "Saludo final de bienestar", desc: "Junta las palmas frente al pecho, inclina ligeramente la cabeza y respira profundo.", tip: "¡Has completado tu sesión de bienestar en silla!", anim: "pulse", pose: "prayer" }
         ]
       }
     ];
 
     const INTENSITY_CONFIG = {
-      suave: { label: "Suave", work: 25, rest: 15, extraTip: "Haz un recorrido corto y cómodo, sin forzar." },
-      medio: { label: "Medio", work: 40, rest: 12, extraTip: "Mantén un ritmo fluido y constante." },
-      fuerte: { label: "Fuerte", work: 55, rest: 10, extraTip: "Amplía el movimiento y mantén el abdomen activo." }
+      suave: { label: "Suave", work: 25, rest: 15, extraTip: "Ritmo tranquilo y recorrido cómodo." },
+      medio: { label: "Medio", work: 40, rest: 12, extraTip: "Ritmo fluido y respiración constante." },
+      fuerte: { label: "Fuerte", work: 55, rest: 10, extraTip: "Mayor duración manteniendo siempre buena postura." }
     };
 
     const PLANS = {
@@ -428,12 +526,24 @@
         title: "Plan 7 Días: Movilidad General",
         days: [
           { day: 1, title: "Despertar articular", catId: "cuello" },
-          { day: 2, title: "Fuerza suave de brazos", catId: "brazos" },
+          { day: 2, title: "Fuerza y tono base", catId: "fuerza" },
           { day: 3, title: "Activación de piernas", catId: "piernas" },
           { day: 4, title: "Espalda flexible", catId: "tronco" },
           { day: 5, title: "Manos ágiles y respiración", catId: "manos" },
           { day: 6, title: "Coordinación activa", catId: "coordinacion" },
           { day: 7, title: "Rutina completa variada", catId: "full" }
+        ]
+      },
+      fuerza: {
+        title: "Plan 7 Días: Fuerza y Tono en Silla",
+        days: [
+          { day: 1, title: "Fuerza global en silla", catId: "fuerza" },
+          { day: 2, title: "Brazos y movilidad superior", catId: "brazos" },
+          { day: 3, title: "Piernas y muslos fuertes", catId: "piernas" },
+          { day: 4, title: "Descarga y estiramiento", catId: "estiramientos" },
+          { day: 5, title: "Fuerza y resistencia", catId: "fuerza" },
+          { day: 6, title: "Abdomen y espalda recta", catId: "tronco" },
+          { day: 7, title: "Gran sesión completa", catId: "full" }
         ]
       },
       cardio: {
@@ -442,7 +552,7 @@
           { day: 1, title: "Primer contacto cardio", catId: "cardio" },
           { day: 2, title: "Piernas y circulación", catId: "piernas" },
           { day: 3, title: "Cardio rítmico sentado", catId: "cardio" },
-          { day: 4, title: "Tronco y brazos activos", catId: "brazos" },
+          { day: 4, title: "Fuerza tonificante", catId: "fuerza" },
           { day: 5, title: "Cardio + Coordinación", catId: "cardio" },
           { day: 6, title: "Estiramiento y recuperación", catId: "estiramientos" },
           { day: 7, title: "Gran sesión completa", catId: "full" }
@@ -465,11 +575,12 @@
     // Estado global
     let currentIntensity = "suave";
     let voiceEnabled = true;
+    let motionEnabled = true;
     let activeQueue = [];
     let currentIndex = 0;
     let isRestPhase = false;
-    let timeLeft = 30;
-    let totalPhaseTime = 30;
+    let timeLeft = 25;
+    let totalPhaseTime = 25;
     let timerInterval = null;
     let isPaused = false;
     let activePlanContext = null;
@@ -480,6 +591,12 @@
     window.addEventListener("DOMContentLoaded", () => {
       if (!localStorage.getItem("sillaActiva_safetyAccepted")) {
         document.getElementById("safetyModal").classList.remove("hidden");
+      }
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        motionEnabled = false;
+        document.body.classList.add("reduce-motion");
+        document.getElementById("btnMotion").textContent = "🎞️ Animación: NO";
+        document.getElementById("btnMotion").setAttribute("aria-pressed", "true");
       }
       setIntensity("suave");
       renderCategories();
@@ -499,16 +616,28 @@
     }
 
     function toggleContrast() {
-      document.body.classList.toggle("high-contrast");
+      const active = document.body.classList.toggle("high-contrast");
+      document.getElementById("btnContrast").setAttribute("aria-pressed", String(active));
     }
 
     function toggleTextSize() {
-      document.body.classList.toggle("large-text");
+      const active = document.body.classList.toggle("large-text");
+      document.getElementById("btnTextSize").setAttribute("aria-pressed", String(active));
+    }
+
+    function toggleMotion() {
+      motionEnabled = !motionEnabled;
+      document.body.classList.toggle("reduce-motion", !motionEnabled);
+      const btn = document.getElementById("btnMotion");
+      btn.textContent = motionEnabled ? "🎞️ Animación: SÍ" : "🎞️ Animación: NO";
+      btn.setAttribute("aria-pressed", String(!motionEnabled));
     }
 
     function toggleVoice() {
       voiceEnabled = !voiceEnabled;
-      document.getElementById("btnVoice").textContent = voiceEnabled ? "🔊 Voz: SÍ" : "🔇 Voz: NO";
+      const btn = document.getElementById("btnVoice");
+      btn.textContent = voiceEnabled ? "🔊 Voz: SÍ" : "🔇 Voz: NO";
+      btn.setAttribute("aria-pressed", String(voiceEnabled));
       if (!voiceEnabled && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
@@ -519,7 +648,7 @@
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "es-ES";
-      utter.rate = 0.95;
+      utter.rate = 0.94;
       window.speechSynthesis.speak(utter);
     }
 
@@ -530,7 +659,7 @@
         const gain = ctx.createGain();
         osc.type = "sine";
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.setValueAtTime(0.14, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -545,8 +674,8 @@
         const el = document.getElementById("int-" + l);
         if (l === level) {
           el.style.borderWidth = "4px";
-          el.style.borderColor = "#1d4ed8";
-          el.style.backgroundColor = "rgba(29, 78, 216, 0.1)";
+          el.style.borderColor = "var(--accent)";
+          el.style.backgroundColor = "rgba(29, 78, 216, 0.12)";
         } else {
           el.style.borderWidth = "2px";
           el.style.borderColor = "";
@@ -559,45 +688,80 @@
       const grid = document.getElementById("categoriesGrid");
       grid.innerHTML = CATEGORIES.map(cat => `
         <button onclick="startCategory('${cat.id}')" class="btn-secondary rounded-2xl p-4 text-left flex items-center gap-4 hover:shadow-md transition">
-          <span class="text-4xl">${cat.icon}</span>
+          <span class="text-4xl" aria-hidden="true">${cat.icon}</span>
           <div>
             <div class="text-lg sm:text-xl font-extrabold">${cat.name}</div>
-            <div class="text-sm opacity-80 font-normal">${cat.desc}</div>
+            <div class="text-sm opacity-85 font-normal">${cat.desc}</div>
           </div>
         </button>
       `).join("");
     }
 
     function getPlanProgress() {
-      return JSON.parse(localStorage.getItem("sillaActiva_plans") || '{"movilidad":1,"cardio":1,"lumbar":1}');
+      try {
+        const saved = JSON.parse(localStorage.getItem("sillaActiva_plans") || "{}");
+        return {
+          movilidad: saved.movilidad || 1,
+          fuerza: saved.fuerza || 1,
+          cardio: saved.cardio || 1,
+          lumbar: saved.lumbar || 1
+        };
+      } catch (e) {
+        return { movilidad: 1, fuerza: 1, cardio: 1, lumbar: 1 };
+      }
+    }
+
+    function resetSinglePlan(planKey) {
+      const progress = getPlanProgress();
+      progress[planKey] = 1;
+      localStorage.setItem("sillaActiva_plans", JSON.stringify(progress));
+      renderPlanCard();
     }
 
     function renderPlanCard() {
       const planKey = document.getElementById("planSelector").value;
       const plan = PLANS[planKey];
       const progress = getPlanProgress();
-      const currentDay = Math.min(progress[planKey] || 1, 7);
+      const rawStep = progress[planKey] || 1;
+      const isFinished = rawStep > 7;
+      const currentDay = Math.min(rawStep, 7);
       const dayObj = plan.days[currentDay - 1];
 
       const dots = plan.days.map(d => {
-        const done = d.day < (progress[planKey] || 1);
-        const active = d.day === currentDay && (progress[planKey] || 1) <= 7;
-        return `<div class="px-2.5 py-1 rounded-xl text-xs sm:text-sm font-extrabold border-2 ${
-          done ? "bg-green-600 text-white border-green-600" : active ? "border-blue-600 bg-blue-600/10" : "opacity-50 border-current"
-        }">Día ${d.day} ${done ? "✓" : ""}</div>`;
+        const done = d.day < rawStep;
+        const active = d.day === currentDay && !isFinished;
+        return `<button onclick="startPlanDay('${planKey}', ${d.day}, '${d.catId}')" title="Hacer Día ${d.day}: ${d.title}" class="px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold border-2 ${
+          done ? "bg-green-700 text-white border-green-700" : active ? "border-current bg-blue-600/15" : "opacity-60 border-current"
+        }">Día ${d.day} ${done ? "✓" : ""}</button>`;
       }).join("");
+
+      const actionArea = isFinished
+        ? `
+          <div class="p-4 rounded-2xl border-2 border-green-600 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-base sm:text-lg font-extrabold">🏆 ¡Plan de 7 días completado!</div>
+              <div class="text-sm opacity-85">Puedes repetir cualquier día pulsando arriba o reiniciar este plan.</div>
+            </div>
+            <button onclick="resetSinglePlan('${planKey}')" class="btn-secondary px-5 py-2 rounded-2xl text-base whitespace-nowrap">
+              🔄 Empezar de nuevo
+            </button>
+          </div>
+        `
+        : `
+          <div class="p-4 rounded-2xl border-2 border-current/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-sm font-bold opacity-80">Siguiente sesión del plan:</div>
+              <div class="text-lg sm:text-xl font-extrabold">Día ${dayObj.day}: ${dayObj.title}</div>
+            </div>
+            <button onclick="startPlanDay('${planKey}', ${dayObj.day}, '${dayObj.catId}')" class="btn-primary px-6 py-3 rounded-2xl text-lg whitespace-nowrap">
+              ▶️ Hacer Día ${dayObj.day}
+            </button>
+          </div>
+        `;
 
       document.getElementById("planContent").innerHTML = `
         <div class="flex flex-wrap gap-1.5">${dots}</div>
-        <div class="p-4 rounded-2xl border-2 border-current/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div class="text-sm font-bold opacity-75">Siguiente sesión del plan:</div>
-            <div class="text-lg sm:text-xl font-extrabold">Día ${dayObj.day}: ${dayObj.title}</div>
-          </div>
-          <button onclick="startPlanDay('${planKey}', ${dayObj.day}, '${dayObj.catId}')" class="btn-primary px-6 py-3 rounded-2xl text-lg whitespace-nowrap">
-            ▶️ Hacer Día ${dayObj.day}
-          </button>
-        </div>
+        ${actionArea}
       `;
     }
 
@@ -612,7 +776,6 @@
 
     function startFullRoutine(keepPlan = false) {
       if (!keepPlan) activePlanContext = null;
-      // Selecciona 1 ejercicio aleatorio de cada una de las 9 categorías
       activeQueue = CATEGORIES.map(cat => {
         const rand = Math.floor(Math.random() * cat.exercises.length);
         return { ...cat.exercises[rand], categoryName: cat.name };
@@ -642,38 +805,38 @@
     function buildChairSVG(pose, anim) {
       let limbs = "";
       if (pose === "armsUp") {
-        limbs = `<path d="M100 72 L72 32 M100 72 L128 32" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>`;
+        limbs = `<path d="M100 72 L72 32 M100 72 L128 32" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       } else if (pose === "armsWide") {
-        limbs = `<path d="M100 72 L52 68 M100 72 L148 68" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>`;
+        limbs = `<path d="M100 72 L52 68 M100 72 L148 68" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       } else if (pose === "armsFront") {
-        limbs = `<path d="M100 72 L145 72 M100 78 L142 82" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>`;
+        limbs = `<path d="M100 72 L145 72 M100 78 L142 82" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       } else if (pose === "biceps") {
-        limbs = `<path d="M100 72 L122 86 L118 58" fill="none" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
+        limbs = `<path d="M100 72 L122 86 L118 58" fill="none" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
+      } else if (pose === "chairPush") {
+        limbs = `<path d="M100 72 L86 122 M100 72 L116 122" fill="none" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       } else if (pose === "prayer" || pose === "hands") {
-        limbs = `<path d="M100 72 L126 78 L126 62" fill="none" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
+        limbs = `<path d="M100 72 L126 78 L126 62" fill="none" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
       } else if (pose === "sideBend") {
-        limbs = `<path d="M100 72 L118 35 M100 76 L85 112" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>`;
+        limbs = `<path d="M100 72 L118 35 M100 76 L85 112" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       } else {
-        limbs = `<path d="M100 72 L124 94" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>`;
+        limbs = `<path d="M100 72 L124 94" stroke="var(--svg-primary)" stroke-width="10" stroke-linecap="round"/>`;
       }
 
-      let legs = `<path d="M100 112 L134 112 L134 155" fill="none" stroke="#0f172a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
+      let legs = `<path d="M100 112 L134 112 L134 155" fill="none" stroke="var(--svg-secondary)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
       if (pose === "legExt") {
-        legs = `<path d="M100 112 L156 112 M100 115 L130 115 L130 155" fill="none" stroke="#0f172a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
+        legs = `<path d="M100 112 L156 112 M100 115 L130 115 L130 155" fill="none" stroke="var(--svg-secondary)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
       } else if (pose === "march") {
-        legs = `<path d="M100 112 L128 94 L132 135 M100 115 L134 115 L134 155" fill="none" stroke="#0f172a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
+        legs = `<path d="M100 112 L128 94 L132 135 M100 115 L134 115 L134 155" fill="none" stroke="var(--svg-secondary)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
       } else if (pose === "feet") {
-        legs = `<path d="M100 112 L134 112 L134 148 L152 142" fill="none" stroke="#0f172a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
+        legs = `<path d="M100 112 L134 112 L134 148 L152 142" fill="none" stroke="var(--svg-secondary)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
       }
 
       return `
-        <svg viewBox="0 0 200 180" class="w-full h-full">
-          <!-- Silla fija sin ruedas -->
-          <path d="M68 62 L68 124 L136 124 M76 124 L76 164 M128 124 L128 164" fill="none" stroke="#64748b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Cuerpo sentado -->
+        <svg viewBox="0 0 200 180" class="w-full h-full" aria-hidden="true">
+          <path d="M68 62 L68 124 L136 124 M76 124 L76 164 M128 124 L128 164" fill="none" stroke="var(--svg-chair)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
           <g class="anim-${anim}">
-            <circle cx="100" cy="44" r="15" fill="#1d4ed8"/>
-            <path d="M100 62 L100 112" stroke="#1d4ed8" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="100" cy="44" r="15" fill="var(--svg-primary)"/>
+            <path d="M100 62 L100 112" stroke="var(--svg-primary)" stroke-width="12" stroke-linecap="round"/>
             ${limbs}
             ${legs}
           </g>
@@ -696,18 +859,18 @@
         totalPhaseTime = cfg.rest;
         timeLeft = cfg.rest;
         phaseBanner.textContent = "😮‍💨 DESCANSO Y RESPIRACIÓN";
-        phaseBanner.className = "text-center py-2 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-emerald-700 text-white";
+        phaseBanner.className = "text-center py-2.5 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-emerald-700 text-white";
         document.getElementById("exerciseTitle").textContent = "Siguiente: " + ex.name;
-        document.getElementById("exerciseDesc").textContent = "Toma aire despacio por la nariz y prepárate para el siguiente movimiento.";
-        document.getElementById("exerciseTip").textContent = "Siguiente zona: " + ex.categoryName;
+        document.getElementById("exerciseDesc").textContent = "Toma aire despacio por la nariz, suéltalo suave y prepárate.";
+        document.getElementById("exerciseTip").textContent = "Zona: " + ex.categoryName;
         document.getElementById("svgContainer").innerHTML = buildChairSVG(ex.pose, "float");
         playTone(440, 0.25);
-        speak(`Descansa ${cfg.rest} segundos. Prepárate para ${ex.name}.`);
+        speak(`Descansa ${cfg.rest} segundos. Siguiente ejercicio: ${ex.name}.`);
       } else {
         totalPhaseTime = cfg.work;
         timeLeft = cfg.work;
         phaseBanner.textContent = "💪 ¡EN MARCHA!";
-        phaseBanner.className = "text-center py-2 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-blue-700 text-white";
+        phaseBanner.className = "text-center py-2.5 px-4 rounded-2xl font-extrabold text-lg sm:text-xl bg-blue-700 text-white";
         document.getElementById("exerciseTitle").textContent = ex.name;
         document.getElementById("exerciseDesc").textContent = ex.desc;
         document.getElementById("exerciseTip").textContent = `${ex.tip} · ${cfg.extraTip}`;
@@ -769,15 +932,25 @@
     }
 
     function prevExercise() {
-      if (currentIndex > 0) {
-        currentIndex--;
+      if (isRestPhase) {
+        // Si estaba en descanso antes del ejercicio currentIndex, vuelve al ejercicio anterior
         isRestPhase = false;
+        if (currentIndex > 0) currentIndex--;
+        loadCurrentStep();
+      } else if (currentIndex > 0) {
+        currentIndex--;
+        loadCurrentStep();
+      } else {
+        // Reinicia el primer ejercicio desde el principio
         loadCurrentStep();
       }
     }
 
     function nextExercise() {
-      if (currentIndex + 1 < activeQueue.length) {
+      if (isRestPhase) {
+        isRestPhase = false;
+        loadCurrentStep();
+      } else if (currentIndex + 1 < activeQueue.length) {
         currentIndex++;
         isRestPhase = false;
         loadCurrentStep();
@@ -797,7 +970,6 @@
       playTone(720, 0.35);
       speak("¡Enhorabuena! Has completado tu rutina de hoy.");
 
-      // Guardar fecha completada para el calendario y estadísticas
       const todayKey = formatDateKey(new Date());
       const history = JSON.parse(localStorage.getItem("sillaActiva_history") || "[]");
       history.push({
@@ -808,15 +980,17 @@
       });
       localStorage.setItem("sillaActiva_history", JSON.stringify(history));
 
-      // Actualizar plan de 7 días si venía de un plan
       const planNotice = document.getElementById("planCompleteNotice");
       if (activePlanContext) {
         const progress = getPlanProgress();
-        if ((progress[activePlanContext.planKey] || 1) === activePlanContext.dayNum) {
-          progress[activePlanContext.planKey] = Math.min(8, activePlanContext.dayNum + 1);
+        const savedStep = progress[activePlanContext.planKey] || 1;
+        if (activePlanContext.dayNum >= savedStep && savedStep <= 7) {
+          progress[activePlanContext.planKey] = activePlanContext.dayNum + 1;
           localStorage.setItem("sillaActiva_plans", JSON.stringify(progress));
         }
-        planNotice.textContent = `⭐ ¡Has completado el Día ${activePlanContext.dayNum} de tu plan guiado!`;
+        planNotice.textContent = activePlanContext.dayNum === 7
+          ? "🏆 ¡Enhorabuena! Has terminado los 7 días completos de tu plan."
+          : `⭐ ¡Has completado el Día ${activePlanContext.dayNum} de tu plan guiado!`;
         planNotice.classList.remove("hidden");
       } else {
         planNotice.classList.add("hidden");
@@ -854,6 +1028,12 @@
       const uniqueDates = new Set(history.map(h => h.date));
       let streak = 0;
       const checkDate = new Date();
+
+      // Si hoy aún no se ha hecho sesión, empezar a contar desde ayer para no romper la racha activa
+      if (!uniqueDates.has(formatDateKey(checkDate))) {
+        checkDate.setDate(checkDate.getDate() - 1);
+      }
+
       while (uniqueDates.has(formatDateKey(checkDate))) {
         streak++;
         checkDate.setDate(checkDate.getDate() - 1);
@@ -891,16 +1071,50 @@
         html += `
           <div class="p-2 rounded-xl font-extrabold text-sm sm:text-base border ${
             isDone
-              ? "bg-green-600 text-white border-green-700"
+              ? "bg-green-700 text-white border-green-800"
               : isToday
-              ? "border-2 border-blue-600"
-              : "border-current/20"
+              ? "border-2 border-current"
+              : "border-current/25"
           }">
             ${d}${isDone ? "⭐" : ""}
           </div>
         `;
       }
       document.getElementById("calendarGrid").innerHTML = html;
+    }
+
+    function exportBackup() {
+      const data = {
+        history: JSON.parse(localStorage.getItem("sillaActiva_history") || "[]"),
+        plans: getPlanProgress()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `silla-activa-progreso-${formatDateKey(new Date())}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.history) localStorage.setItem("sillaActiva_history", JSON.stringify(data.history));
+          if (data.plans) localStorage.setItem("sillaActiva_plans", JSON.stringify(data.plans));
+          renderPlanCard();
+          updateStatsUI();
+          renderCalendar();
+          alert("✅ Progreso restaurado correctamente.");
+        } catch (err) {
+          alert("El archivo seleccionado no es válido.");
+        }
+      };
+      reader.readAsText(file);
     }
 
     function resetHistory() {
