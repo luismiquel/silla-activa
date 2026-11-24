@@ -194,6 +194,18 @@
           <span class="px-3 py-1 rounded-full border border-current">⏱️ Activo: <span id="totalMinutesBadge">0</span> min</span>
           <span class="px-3 py-1 rounded-full border border-current">🔥 Racha: <span id="streakBadge">0</span> días</span>
         </div>
+
+        <!-- Barra de progreso semanal -->
+        <div class="max-w-md mx-auto pt-2 space-y-1.5">
+          <div class="flex justify-between text-xs sm:text-sm font-extrabold">
+            <span>📅 Objetivo semanal (Lunes a Domingo)</span>
+            <span id="weeklyGoalText">0 / 5 días</span>
+          </div>
+          <div class="w-full h-3.5 rounded-full border border-current overflow-hidden p-0.5">
+            <div id="weeklyGoalBar" class="h-full rounded-full transition-all duration-300" style="width: 0%; background-color: var(--accent);"></div>
+          </div>
+        </div>
+
         <div class="pt-2 flex flex-wrap justify-center gap-2.5">
           <button onclick="shareAppWhatsApp()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base shadow">
             <span aria-hidden="true">📲</span>
@@ -228,12 +240,28 @@
         </div>
       </div>
 
-      <!-- Botón principal Rutina Completa + Mini-Rutinas de 3 minutos -->
+      <!-- Botón principal Rutina Completa + Mi Rutina Favorita + Mini-Rutinas -->
       <div class="space-y-3">
         <button onclick="startFullRoutine()" class="btn-primary w-full rounded-3xl p-5 text-xl sm:text-2xl shadow-lg flex items-center justify-center gap-3">
           <span aria-hidden="true">▶️</span>
           <span>Empezar Rutina Completa (10 variados)</span>
         </button>
+
+        <!-- Bloque de Mi Rutina Favorita -->
+        <div id="favoritesCard" class="card-box rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold">❤️ Mi Rutina Favorita (<span id="favCountBadge">0</span> ejercicios)</h2>
+            <p id="favSubtitle" class="text-sm opacity-85">Marca con ❤️ los ejercicios que más te gusten para crear tu rutina a medida.</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button id="btnViewFavorites" onclick="openFavoritesScreen()" class="hidden px-4 py-3 rounded-2xl border-2 border-current font-extrabold text-sm sm:text-base">
+              Ver lista
+            </button>
+            <button id="btnStartFavorites" onclick="startFavoritesRoutine()" class="hidden btn-primary px-5 py-3 rounded-2xl text-base sm:text-lg whitespace-nowrap">
+              ▶️ Empezar
+            </button>
+          </div>
+        </div>
 
         <div class="card-box rounded-3xl p-4 sm:p-5 space-y-3">
           <h2 class="text-lg sm:text-xl font-extrabold text-center">⚡ ¿Poco tiempo? Mini-rutinas rápidas (3 min · 5 ejercicios)</h2>
@@ -323,14 +351,14 @@
       </div>
     </section>
 
-    <!-- PANTALLA DE DETALLE DE CATEGORÍA (Catálogo Navegable) -->
+    <!-- PANTALLA DE DETALLE DE CATEGORÍA O FAVORITOS -->
     <section id="categoryScreen" class="hidden space-y-5">
       <div class="card-box rounded-3xl p-5 space-y-4">
         <div class="flex items-center justify-between gap-3">
           <button onclick="goHome()" class="px-4 py-2.5 rounded-2xl border-2 border-current font-extrabold text-base">
             ⬅️ Volver
           </button>
-          <span class="px-3 py-1 rounded-full border border-current text-sm font-bold">15 ejercicios</span>
+          <span id="catDetailBadge" class="px-3 py-1 rounded-full border border-current text-sm font-bold">15 ejercicios</span>
         </div>
 
         <div class="text-center space-y-1">
@@ -341,12 +369,12 @@
 
         <button id="btnStartWholeCat" class="btn-primary w-full rounded-3xl p-5 text-xl shadow-lg flex items-center justify-center gap-3">
           <span>▶️</span>
-          <span>Hacer los 15 ejercicios seguidos</span>
+          <span id="btnStartWholeCatText">Hacer los 15 ejercicios seguidos</span>
         </button>
       </div>
 
       <div class="space-y-2.5">
-        <h3 class="text-lg sm:text-xl font-extrabold px-1">O pulsa un ejercicio suelto para practicarlo:</h3>
+        <h3 class="text-lg sm:text-xl font-extrabold px-1">Pulsa ❤️ para guardar en favoritos o practica uno suelto:</h3>
         <div id="catExercisesList" class="space-y-2.5"></div>
       </div>
     </section>
@@ -355,7 +383,10 @@
     <section id="workoutScreen" class="hidden space-y-5" aria-live="polite">
       <div class="card-box rounded-3xl p-5 space-y-4">
         <div class="flex items-center justify-between gap-2 text-base font-bold">
-          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 15</span>
+          <span id="stepIndicator" class="px-3 py-1 rounded-full border border-current">Ejercicio 1 de 10</span>
+          <button id="btnWorkoutFav" onclick="toggleCurrentWorkoutFavorite()" class="px-3 py-1 rounded-full border-2 border-current font-extrabold text-sm sm:text-base">
+            🤍 Favorito
+          </button>
           <span id="intensityBadge" class="px-3 py-1 rounded-full border border-current">Nivel: Suave</span>
         </div>
 
@@ -752,6 +783,7 @@
     let wakeLockSentinel = null;
     let lastSpokenText = "";
     let lastCompleteStats = { count: 10, level: "Suave", mins: 5 };
+    let currentDetailView = null; // { type: "category", catId } | { type: "favorites" }
 
     // Inicialización y carga de preferencias
     window.addEventListener("DOMContentLoaded", () => {
@@ -761,6 +793,7 @@
       }
       renderCategories();
       renderPlanCard();
+      updateFavoritesUI();
       updateStatsUI();
       renderCalendar();
     });
@@ -802,6 +835,121 @@
         intensity: currentIntensity
       };
       localStorage.setItem("sillaActiva_prefs", JSON.stringify(prefs));
+    }
+
+    // Gestión de Favoritos (❤️)
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem("sillaActiva_favorites") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function isFavorite(catId, exIdx) {
+      return getFavorites().some(f => f.catId === catId && f.exIdx === exIdx);
+    }
+
+    function toggleFavorite(catId, exIdx) {
+      let favs = getFavorites();
+      const existsIdx = favs.findIndex(f => f.catId === catId && f.exIdx === exIdx);
+      if (existsIdx >= 0) {
+        favs.splice(existsIdx, 1);
+      } else {
+        favs.push({ catId, exIdx });
+      }
+      localStorage.setItem("sillaActiva_favorites", JSON.stringify(favs));
+      updateFavoritesUI();
+
+      // Refrescar vista activa si corresponde
+      if (!document.getElementById("categoryScreen").classList.contains("hidden") && currentDetailView) {
+        if (currentDetailView.type === "category") openCategoryDetail(currentDetailView.catId, false);
+        else if (currentDetailView.type === "favorites") openFavoritesScreen(false);
+      }
+      if (!document.getElementById("workoutScreen").classList.contains("hidden")) {
+        updateWorkoutFavButton();
+      }
+      if (document.getElementById("exerciseSearchInput").value.trim()) {
+        handleSearchInput();
+      }
+    }
+
+    function updateFavoritesUI() {
+      const favs = getFavorites();
+      document.getElementById("favCountBadge").textContent = favs.length;
+      const btnStart = document.getElementById("btnStartFavorites");
+      const btnView = document.getElementById("btnViewFavorites");
+      const sub = document.getElementById("favSubtitle");
+
+      if (favs.length > 0) {
+        btnStart.classList.remove("hidden");
+        btnView.classList.remove("hidden");
+        sub.textContent = "Tu selección personal lista para practicar en un toque.";
+      } else {
+        btnStart.classList.add("hidden");
+        btnView.classList.add("hidden");
+        sub.textContent = "Marca con ❤️ los ejercicios que más te gusten para crear tu rutina a medida.";
+      }
+    }
+
+    function openFavoritesScreen(scrollTop = true) {
+      const favs = getFavorites();
+      currentDetailView = { type: "favorites" };
+
+      document.getElementById("catDetailIcon").textContent = "❤️";
+      document.getElementById("catDetailTitle").textContent = "Mis Ejercicios Favoritos";
+      document.getElementById("catDetailDesc").textContent = "Tu selección personalizada de ejercicios en silla.";
+      document.getElementById("catDetailBadge").textContent = `${favs.length} favoritos`;
+      document.getElementById("btnStartWholeCatText").textContent = `Hacer mis ${favs.length} favoritos seguidos`;
+      document.getElementById("btnStartWholeCat").onclick = () => startFavoritesRoutine();
+
+      const listEl = document.getElementById("catExercisesList");
+      if (favs.length === 0) {
+        listEl.innerHTML = `<div class="card-box rounded-2xl p-5 text-center opacity-85">Aún no tienes ejercicios favoritos. Entra en cualquier zona y pulsa 🤍 para añadirlos.</div>`;
+      } else {
+        listEl.innerHTML = favs.map((f, i) => {
+          const cat = CATEGORIES.find(c => c.id === f.catId);
+          if (!cat || !cat.exercises[f.exIdx]) return "";
+          const ex = cat.exercises[f.exIdx];
+          return `
+            <div class="card-box rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="font-extrabold text-lg">${i + 1}. ${ex.name}</div>
+                <div class="text-xs font-bold opacity-75">${cat.icon} ${cat.name}</div>
+                <p class="text-sm sm:text-base opacity-85">${ex.desc}</p>
+              </div>
+              <div class="flex gap-2 shrink-0">
+                <button onclick="toggleFavorite('${f.catId}', ${f.exIdx})" class="px-3.5 py-2.5 rounded-xl border-2 border-current font-extrabold text-sm">
+                  ❤️ Quitar
+                </button>
+                <button onclick="startSingleExercise('${f.catId}', ${f.exIdx})" class="px-4 py-2.5 rounded-xl bg-blue-700 text-white font-extrabold text-sm whitespace-nowrap">
+                  ▶️ Hacer
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("workoutScreen").classList.add("hidden");
+      document.getElementById("completeScreen").classList.add("hidden");
+      document.getElementById("categoryScreen").classList.remove("hidden");
+      if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function startFavoritesRoutine() {
+      const favs = getFavorites();
+      if (favs.length === 0) return;
+      activePlanContext = null;
+      activeQueue = favs
+        .map(f => {
+          const cat = CATEGORIES.find(c => c.id === f.catId);
+          if (!cat || !cat.exercises[f.exIdx]) return null;
+          return { ...cat.exercises[f.exIdx], categoryName: cat.name, catId: f.catId, exIdx: f.exIdx };
+        })
+        .filter(Boolean);
+      beginWorkout(0);
     }
 
     async function requestWakeLock() {
@@ -969,17 +1117,25 @@
       const shown = matches.slice(0, 12);
       resultsBox.innerHTML = `
         <div class="text-xs sm:text-sm font-bold opacity-80 px-1">Encontrados: ${matches.length} ejercicios ${matches.length > 12 ? "(mostrando los 12 primeros)" : ""}</div>
-        ${shown.map(m => `
-          <div class="p-3 rounded-2xl border border-current/30 flex items-center justify-between gap-2">
-            <div>
-              <div class="font-extrabold text-base">${m.catIcon} ${m.ex.name}</div>
-              <div class="text-xs opacity-80">${m.catName}</div>
+        ${shown.map(m => {
+          const fav = isFavorite(m.catId, m.exIdx);
+          return `
+            <div class="p-3 rounded-2xl border border-current/30 flex items-center justify-between gap-2">
+              <div>
+                <div class="font-extrabold text-base">${m.catIcon} ${m.ex.name}</div>
+                <div class="text-xs opacity-80">${m.catName}</div>
+              </div>
+              <div class="flex gap-1.5 shrink-0">
+                <button onclick="toggleFavorite('${m.catId}', ${m.exIdx})" aria-label="Guardar en favoritos" class="px-3 py-2 rounded-xl border border-current font-extrabold text-sm">
+                  ${fav ? "❤️" : "🤍"}
+                </button>
+                <button onclick="startSingleExercise('${m.catId}', ${m.exIdx})" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-extrabold text-sm">
+                  ▶️ Hacer
+                </button>
+              </div>
             </div>
-            <button onclick="startSingleExercise('${m.catId}', ${m.exIdx})" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-extrabold text-sm shrink-0">
-              ▶️ Hacer
-            </button>
-          </div>
-        `).join("")}
+          `;
+        }).join("")}
       `;
     }
 
@@ -1005,38 +1161,47 @@
       `).join("");
     }
 
-    function openCategoryDetail(catId) {
+    function openCategoryDetail(catId, scrollTop = true) {
       const cat = CATEGORIES.find(c => c.id === catId);
       if (!cat) return;
 
+      currentDetailView = { type: "category", catId };
       document.getElementById("catDetailIcon").textContent = cat.icon;
       document.getElementById("catDetailTitle").textContent = cat.name;
       document.getElementById("catDetailDesc").textContent = cat.desc;
+      document.getElementById("catDetailBadge").textContent = "15 ejercicios";
+      document.getElementById("btnStartWholeCatText").textContent = "Hacer los 15 ejercicios seguidos";
       document.getElementById("btnStartWholeCat").onclick = () => startCategory(cat.id, false, 0);
 
       const listEl = document.getElementById("catExercisesList");
-      listEl.innerHTML = cat.exercises.map((ex, idx) => `
-        <div class="card-box rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="space-y-1">
-            <div class="font-extrabold text-lg">${idx + 1}. ${ex.name}</div>
-            <p class="text-sm sm:text-base opacity-85">${ex.desc}</p>
+      listEl.innerHTML = cat.exercises.map((ex, idx) => {
+        const fav = isFavorite(cat.id, idx);
+        return `
+          <div class="card-box rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="space-y-1">
+              <div class="font-extrabold text-lg">${idx + 1}. ${ex.name}</div>
+              <p class="text-sm sm:text-base opacity-85">${ex.desc}</p>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <button onclick="toggleFavorite('${cat.id}', ${idx})" aria-label="Guardar favorito" class="px-3.5 py-2.5 rounded-xl border-2 border-current font-extrabold text-sm">
+                ${fav ? "❤️" : "🤍"}
+              </button>
+              <button onclick="startSingleExercise('${cat.id}', ${idx})" class="px-3.5 py-2.5 rounded-xl border-2 border-current font-extrabold text-sm whitespace-nowrap">
+                🎯 Solo este
+              </button>
+              <button onclick="startCategory('${cat.id}', false, ${idx})" class="px-4 py-2.5 rounded-xl bg-blue-700 text-white font-extrabold text-sm whitespace-nowrap">
+                ▶️ Desde aquí
+              </button>
+            </div>
           </div>
-          <div class="flex gap-2 shrink-0">
-            <button onclick="startSingleExercise('${cat.id}', ${idx})" class="px-4 py-2.5 rounded-xl border-2 border-current font-extrabold text-sm whitespace-nowrap">
-              🎯 Solo este
-            </button>
-            <button onclick="startCategory('${cat.id}', false, ${idx})" class="px-4 py-2.5 rounded-xl bg-blue-700 text-white font-extrabold text-sm whitespace-nowrap">
-              ▶️ Desde aquí
-            </button>
-          </div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
       document.getElementById("homeScreen").classList.add("hidden");
       document.getElementById("workoutScreen").classList.add("hidden");
       document.getElementById("completeScreen").classList.add("hidden");
       document.getElementById("categoryScreen").classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function getPlanProgress() {
@@ -1120,7 +1285,7 @@
       if (!keepPlan) activePlanContext = null;
       activeQueue = CATEGORIES.map(cat => {
         const rand = Math.floor(Math.random() * cat.exercises.length);
-        return { ...cat.exercises[rand], categoryName: cat.name };
+        return { ...cat.exercises[rand], categoryName: cat.name, catId: cat.id, exIdx: rand };
       });
       beginWorkout(0);
     }
@@ -1130,7 +1295,7 @@
       const items = QUICK_PRESETS[presetKey] || [];
       activeQueue = items.map(item => {
         const cat = CATEGORIES.find(c => c.id === item.catId);
-        return { ...cat.exercises[item.exIdx], categoryName: cat.name };
+        return { ...cat.exercises[item.exIdx], categoryName: cat.name, catId: item.catId, exIdx: item.exIdx };
       });
       beginWorkout(0);
     }
@@ -1138,14 +1303,14 @@
     function startCategory(catId, keepPlan = false, startIndex = 0) {
       if (!keepPlan) activePlanContext = null;
       const cat = CATEGORIES.find(c => c.id === catId);
-      activeQueue = cat.exercises.map(ex => ({ ...ex, categoryName: cat.name }));
+      activeQueue = cat.exercises.map((ex, idx) => ({ ...ex, categoryName: cat.name, catId: cat.id, exIdx: idx }));
       beginWorkout(startIndex);
     }
 
     function startSingleExercise(catId, exIndex) {
       activePlanContext = null;
       const cat = CATEGORIES.find(c => c.id === catId);
-      activeQueue = [{ ...cat.exercises[exIndex], categoryName: cat.name }];
+      activeQueue = [{ ...cat.exercises[exIndex], categoryName: cat.name, catId: cat.id, exIdx: exIndex }];
       beginWorkout(0);
     }
 
@@ -1162,6 +1327,24 @@
       requestWakeLock();
       loadCurrentStep();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateWorkoutFavButton() {
+      const ex = activeQueue[currentIndex];
+      const btn = document.getElementById("btnWorkoutFav");
+      if (!ex || typeof ex.catId === "undefined") {
+        btn.classList.add("hidden");
+        return;
+      }
+      btn.classList.remove("hidden");
+      const fav = isFavorite(ex.catId, ex.exIdx);
+      btn.textContent = fav ? "❤️ Favorito" : "🤍 Guardar";
+    }
+
+    function toggleCurrentWorkoutFavorite() {
+      const ex = activeQueue[currentIndex];
+      if (!ex || typeof ex.catId === "undefined") return;
+      toggleFavorite(ex.catId, ex.exIdx);
     }
 
     function buildChairSVG(pose, anim) {
@@ -1213,6 +1396,7 @@
 
       document.getElementById("stepIndicator").textContent = `Ejercicio ${currentIndex + 1} de ${activeQueue.length}`;
       document.getElementById("btnPause").textContent = "⏸️ Pausar";
+      updateWorkoutFavButton();
       isPaused = false;
 
       const phaseBanner = document.getElementById("phaseBanner");
@@ -1417,11 +1601,13 @@
     function goHome() {
       clearInterval(timerInterval);
       releaseWakeLock();
+      currentDetailView = null;
       document.getElementById("workoutScreen").classList.add("hidden");
       document.getElementById("categoryScreen").classList.add("hidden");
       document.getElementById("completeScreen").classList.add("hidden");
       document.getElementById("homeScreen").classList.remove("hidden");
       renderPlanCard();
+      updateFavoritesUI();
       updateStatsUI();
       renderCalendar();
     }
@@ -1441,6 +1627,24 @@
       document.getElementById("totalMinutesBadge").textContent = Math.round(totalSeconds / 60);
 
       const uniqueDates = new Set(history.map(h => h.date));
+
+      // Calcular progreso semanal (Lunes a Domingo de la semana actual)
+      const now = new Date();
+      const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Lunes...
+      const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diffToMonday);
+      let weekDaysDone = 0;
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+        if (uniqueDates.has(formatDateKey(d))) weekDaysDone++;
+      }
+      const weeklyGoal = 5;
+      const weeklyPct = Math.min(100, Math.round((weekDaysDone / weeklyGoal) * 100));
+      document.getElementById("weeklyGoalText").textContent =
+        weekDaysDone >= weeklyGoal ? `🏆 ¡${weekDaysDone} de ${weeklyGoal} días cumplidos!` : `${weekDaysDone} / ${weeklyGoal} días`;
+      document.getElementById("weeklyGoalBar").style.width = weeklyPct + "%";
+
+      // Racha de días consecutivos
       let streak = 0;
       const checkDate = new Date();
 
@@ -1500,7 +1704,8 @@
     function exportBackup() {
       const data = {
         history: JSON.parse(localStorage.getItem("sillaActiva_history") || "[]"),
-        plans: getPlanProgress()
+        plans: getPlanProgress(),
+        favorites: getFavorites()
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -1520,10 +1725,12 @@
           const data = JSON.parse(e.target.result);
           if (data.history) localStorage.setItem("sillaActiva_history", JSON.stringify(data.history));
           if (data.plans) localStorage.setItem("sillaActiva_plans", JSON.stringify(data.plans));
+          if (data.favorites) localStorage.setItem("sillaActiva_favorites", JSON.stringify(data.favorites));
           renderPlanCard();
+          updateFavoritesUI();
           updateStatsUI();
           renderCalendar();
-          alert("✅ Progreso restaurado correctamente.");
+          alert("✅ Progreso y favoritos restaurados correctamente.");
         } catch (err) {
           alert("El archivo seleccionado no es válido.");
         }
@@ -1532,7 +1739,7 @@
     }
 
     function resetHistory() {
-      if (confirm("¿Seguro que quieres borrar el calendario y el progreso de los planes?")) {
+      if (confirm("¿Seguro que quieres borrar el calendario y el progreso de los planes? (Tus favoritos se conservarán)")) {
         localStorage.removeItem("sillaActiva_history");
         localStorage.removeItem("sillaActiva_plans");
         renderPlanCard();
