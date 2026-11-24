@@ -55,7 +55,7 @@
       border: 2px solid var(--border-color);
     }
 
-    select {
+    select, input[type="search"] {
       background-color: var(--bg-card);
       color: var(--text-main);
     }
@@ -188,15 +188,20 @@
       <div class="card-box rounded-3xl p-5 sm:p-6 text-center space-y-3">
         <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight">150 Ejercicios Seguros en Silla</h1>
         <p class="opacity-90 text-base sm:text-lg">100 % sentado, sin complicaciones y guiado por voz en español.</p>
-        <div class="flex flex-wrap justify-center gap-2.5 pt-1 text-sm sm:text-base font-bold">
-          <span class="px-3 py-1 rounded-full border border-current">✅ 150 ejercicios (15 por zona)</span>
+        <div class="flex flex-wrap justify-center gap-2 pt-1 text-sm sm:text-base font-bold">
+          <span class="px-3 py-1 rounded-full border border-current">✅ 150 ejercicios</span>
           <span class="px-3 py-1 rounded-full border border-current">🏆 Sesiones: <span id="totalSessionsBadge">0</span></span>
+          <span class="px-3 py-1 rounded-full border border-current">⏱️ Activo: <span id="totalMinutesBadge">0</span> min</span>
           <span class="px-3 py-1 rounded-full border border-current">🔥 Racha: <span id="streakBadge">0</span> días</span>
         </div>
-        <div class="pt-2">
+        <div class="pt-2 flex flex-wrap justify-center gap-2.5">
           <button onclick="shareAppWhatsApp()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm sm:text-base shadow">
             <span aria-hidden="true">📲</span>
-            <span>Recomendar app por WhatsApp</span>
+            <span>Compartir por WhatsApp</span>
+          </button>
+          <button onclick="downloadCalendarReminder()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl border-2 border-current font-extrabold text-sm sm:text-base">
+            <span aria-hidden="true">⏰</span>
+            <span>Recordatorio diario</span>
           </button>
         </div>
       </div>
@@ -223,12 +228,33 @@
         </div>
       </div>
 
-      <!-- Botón principal Rutina Completa -->
+      <!-- Botón principal Rutina Completa + Mini-Rutinas de 3 minutos -->
       <div class="space-y-3">
         <button onclick="startFullRoutine()" class="btn-primary w-full rounded-3xl p-5 text-xl sm:text-2xl shadow-lg flex items-center justify-center gap-3">
           <span aria-hidden="true">▶️</span>
           <span>Empezar Rutina Completa (10 variados)</span>
         </button>
+
+        <div class="card-box rounded-3xl p-4 sm:p-5 space-y-3">
+          <h2 class="text-lg sm:text-xl font-extrabold text-center">⚡ ¿Poco tiempo? Mini-rutinas rápidas (3 min · 5 ejercicios)</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <button onclick="startQuickPreset('despertar')" class="btn-secondary rounded-2xl p-3 text-center flex flex-col items-center justify-center">
+              <span class="text-2xl" aria-hidden="true">🌅</span>
+              <span class="font-extrabold text-base">Despertar suave</span>
+              <span class="text-xs opacity-80">Cuello, hombros y manos</span>
+            </button>
+            <button onclick="startQuickPreset('oficina')" class="btn-secondary rounded-2xl p-3 text-center flex flex-col items-center justify-center">
+              <span class="text-2xl" aria-hidden="true">🪑</span>
+              <span class="font-extrabold text-base">Alivio tras estar sentado</span>
+              <span class="text-xs opacity-80">Espalda, piernas y tobillos</span>
+            </button>
+            <button onclick="startQuickPreset('calma')" class="btn-secondary rounded-2xl p-3 text-center flex flex-col items-center justify-center">
+              <span class="text-2xl" aria-hidden="true">🌙</span>
+              <span class="font-extrabold text-base">Calma y descanso</span>
+              <span class="text-xs opacity-80">Respiración y estiramiento</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Planes guiados de 7 días -->
@@ -243,6 +269,26 @@
           </select>
         </div>
         <div id="planContent" class="space-y-4"></div>
+      </div>
+
+      <!-- Buscador rápido entre los 150 ejercicios -->
+      <div class="card-box rounded-3xl p-4 sm:p-5 space-y-3">
+        <label for="exerciseSearchInput" class="block text-lg sm:text-xl font-extrabold">
+          🔍 Buscar ejercicio entre los 150
+        </label>
+        <div class="flex gap-2">
+          <input
+            id="exerciseSearchInput"
+            type="search"
+            oninput="handleSearchInput()"
+            placeholder="Escribe: rodilla, cuello, respirar, fuerza, tobillo..."
+            class="w-full px-4 py-3 rounded-2xl border-2 border-current text-base sm:text-lg font-semibold"
+          />
+          <button id="btnClearSearch" onclick="clearSearch()" class="hidden px-4 py-3 rounded-2xl border-2 border-current font-extrabold">
+            ✖
+          </button>
+        </div>
+        <div id="searchResultsBox" class="hidden space-y-2 pt-2"></div>
       </div>
 
       <!-- Categorías de ejercicios -->
@@ -458,7 +504,7 @@
           { name: "Estiramiento suave de palma", desc: "Estira un brazo al frente con palma hacia afuera y ayuda suave en los dedos con la otra mano.", tip: "Seguridad: Estira sin tirar con fuerza ni provocar dolor.", anim: "float", pose: "armsFront" },
           { name: "Separar y juntar dedos", desc: "Abre los dedos en abanico 2 segundos y vuélvelos a juntar.", tip: "Fortalece la musculatura pequeña de la mano.", anim: "pulse", pose: "hands" },
           { name: "Saludo de muñecas", desc: "Apoya los antebrazos en los muslos y sube y baja las manos moviendo solo la muñeca.", tip: "Alivia la rigidez matinal en muñecas.", anim: "float", pose: "hands" },
-          { name: "Palmas arriba y abajo", desc: "Con los codos doblados, gira las palmas mirando al techo y luego mirando al suelo.", tip: "Moviliza el antebrazo con suavidad.", anim: "sway", pose: "hands" },
+          { name: "Palmas arriba y palmas abajo", desc: "Con los codos doblados, gira las palmas mirando al techo y luego mirando al suelo.", tip: "Moviliza el antebrazo con suavidad.", anim: "sway", pose: "hands" },
           { name: "Garra suave de dedos", desc: "Dobla solo las articulaciones medias de los dedos formando una garra y estira.", tip: "Excelente para rigidez por artrosis leve.", anim: "pulse", pose: "hands" },
           { name: "Círculos con los pulgares", desc: "Cierra suavemente los cuatro dedos y gira ambos pulgares en círculos amplios.", tip: "Alivia tensión en la base del pulgar.", anim: "sway", pose: "hands" },
           { name: "Desviación lateral de muñecas", desc: "Con las palmas hacia abajo sobre los muslos, lleva las manos suavemente hacia los lados como limpiaparabrisas.", tip: "Mejora la movilidad lateral de la muñeca.", anim: "sway", pose: "hands" },
@@ -612,6 +658,30 @@
       suave: { label: "Suave", work: 25, rest: 15, extraTip: "Ritmo tranquilo y recorrido cómodo." },
       medio: { label: "Medio", work: 40, rest: 12, extraTip: "Ritmo fluido y respiración constante." },
       fuerte: { label: "Fuerte", work: 55, rest: 10, extraTip: "Mayor duración manteniendo siempre buena postura." }
+    };
+
+    const QUICK_PRESETS = {
+      despertar: [
+        { catId: "cuello", exIdx: 0 },
+        { catId: "cuello", exIdx: 2 },
+        { catId: "brazos", exIdx: 2 },
+        { catId: "manos", exIdx: 0 },
+        { catId: "tronco", exIdx: 5 }
+      ],
+      oficina: [
+        { catId: "tronco", exIdx: 0 },
+        { catId: "estiramientos", exIdx: 0 },
+        { catId: "piernas", exIdx: 1 },
+        { catId: "piernas", exIdx: 6 },
+        { catId: "estiramientos", exIdx: 4 }
+      ],
+      calma: [
+        { catId: "calma", exIdx: 0 },
+        { catId: "calma", exIdx: 1 },
+        { catId: "estiramientos", exIdx: 8 },
+        { catId: "calma", exIdx: 11 },
+        { catId: "calma", exIdx: 14 }
+      ]
     };
 
     const PLANS = {
@@ -861,6 +931,64 @@
       if (persist) saveUserPrefs();
     }
 
+    function normalizeText(str) {
+      return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function handleSearchInput() {
+      const input = document.getElementById("exerciseSearchInput");
+      const clearBtn = document.getElementById("btnClearSearch");
+      const resultsBox = document.getElementById("searchResultsBox");
+      const query = normalizeText(input.value.trim());
+
+      if (!query) {
+        clearBtn.classList.add("hidden");
+        resultsBox.classList.add("hidden");
+        resultsBox.innerHTML = "";
+        return;
+      }
+
+      clearBtn.classList.remove("hidden");
+      const matches = [];
+
+      CATEGORIES.forEach(cat => {
+        cat.exercises.forEach((ex, idx) => {
+          const haystack = normalizeText(`${ex.name} ${ex.desc} ${ex.tip} ${cat.name}`);
+          if (haystack.includes(query)) {
+            matches.push({ catId: cat.id, catName: cat.name, catIcon: cat.icon, exIdx: idx, ex });
+          }
+        });
+      });
+
+      resultsBox.classList.remove("hidden");
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `<p class="text-sm sm:text-base opacity-80 p-2">No hay ejercicios con esa palabra. Prueba con: <em>rodilla, cuello, manos, respirar, fuerza</em>.</p>`;
+        return;
+      }
+
+      const shown = matches.slice(0, 12);
+      resultsBox.innerHTML = `
+        <div class="text-xs sm:text-sm font-bold opacity-80 px-1">Encontrados: ${matches.length} ejercicios ${matches.length > 12 ? "(mostrando los 12 primeros)" : ""}</div>
+        ${shown.map(m => `
+          <div class="p-3 rounded-2xl border border-current/30 flex items-center justify-between gap-2">
+            <div>
+              <div class="font-extrabold text-base">${m.catIcon} ${m.ex.name}</div>
+              <div class="text-xs opacity-80">${m.catName}</div>
+            </div>
+            <button onclick="startSingleExercise('${m.catId}', ${m.exIdx})" class="px-3.5 py-2 rounded-xl bg-blue-700 text-white font-extrabold text-sm shrink-0">
+              ▶️ Hacer
+            </button>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function clearSearch() {
+      const input = document.getElementById("exerciseSearchInput");
+      input.value = "";
+      handleSearchInput();
+    }
+
     function renderCategories() {
       const grid = document.getElementById("categoriesGrid");
       grid.innerHTML = CATEGORIES.map(cat => `
@@ -993,6 +1121,16 @@
       activeQueue = CATEGORIES.map(cat => {
         const rand = Math.floor(Math.random() * cat.exercises.length);
         return { ...cat.exercises[rand], categoryName: cat.name };
+      });
+      beginWorkout(0);
+    }
+
+    function startQuickPreset(presetKey) {
+      activePlanContext = null;
+      const items = QUICK_PRESETS[presetKey] || [];
+      activeQueue = items.map(item => {
+        const cat = CATEGORIES.find(c => c.id === item.catId);
+        return { ...cat.exercises[item.exIdx], categoryName: cat.name };
       });
       beginWorkout(0);
     }
@@ -1235,6 +1373,35 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    function downloadCalendarReminder() {
+      const url = window.location.href;
+      const now = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      const dateStr = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+      const ics = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//SillaActiva//ES",
+        "BEGIN:VEVENT",
+        `UID:sillaactiva-${Date.now()}@local`,
+        `DTSTAMP:${dateStr}T090000`,
+        `DTSTART:${dateStr}T103000`,
+        `DTEND:${dateStr}T104500`,
+        "RRULE:FREQ=DAILY",
+        "SUMMARY:🪑 Ejercicios suaves en silla (SillaActiva)",
+        `DESCRIPTION:Dedica 5-10 minutos a tus ejercicios en silla: ${url}`,
+        "END:VEVENT",
+        "END:VCALENDAR"
+      ].join("\r\n");
+
+      const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "recordatorio-silla-activa.ics";
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
     function shareAppWhatsApp() {
       const url = window.location.href;
       const text = encodeURIComponent(`🪑 Te comparto SillaActiva, una web gratuita con 150 ejercicios fáciles y guiados por voz para hacer 100% sentado en silla: ${url}`);
@@ -1269,6 +1436,9 @@
     function updateStatsUI() {
       const history = JSON.parse(localStorage.getItem("sillaActiva_history") || "[]");
       document.getElementById("totalSessionsBadge").textContent = history.length;
+
+      const totalSeconds = history.reduce((acc, item) => acc + (item.seconds || 0), 0);
+      document.getElementById("totalMinutesBadge").textContent = Math.round(totalSeconds / 60);
 
       const uniqueDates = new Set(history.map(h => h.date));
       let streak = 0;
